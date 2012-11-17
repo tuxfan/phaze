@@ -3,4 +3,7 @@ aclocal.m4
 autom4te.cache
 configure
 configure.ac
-
+config/install-sh
+config/lib_version
+config/missing
+config/version
