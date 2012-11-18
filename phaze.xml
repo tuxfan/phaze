@@ -1,0 +1,101 @@
+<!-- ==========================================================================!
+ ! Ant build specification for the phaze project
+ !========================================================================== -->
+
+<project name="MyProject" default="compile" basedir=".">
+	<description>Phaze DSL Project</description>
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+
+	<!-- ======================================================================!
+	 ! Create jar from ANTLR4 grammar
+	 !======================================================================= -->
+	<target name="grammar" depends="prog_antlr">
+
+		<!-- ===================================================================!
+		 ! Create java classes from ANTLR4 grammar
+		 !=================================================================== -->
+		<java classname="org.antlr.v4.Tool" fork="true" failonerror="true">
+			<arg value="-o"/>
+			<arg path="${build}/antlr"/>
+			<arg path="${src}/grammar/phaze.g4"/>
+		</java>
+
+		<!-- ===================================================================!
+		 ! Compile java classes
+		 !=================================================================== -->
+		<mkdir dir="${build}/antlr/classes"/>
+		<javac srcdir="${build}/antlr"
+			destdir="${build}/antlr/classes"
+			deprecation="Yes"
+			listfiles="Yes"
+			includeantruntime="false">
+
+			<classpath>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
+		</javac>
+
+		<!-- ===================================================================!
+		 ! Archive compiled classes
+		 !==================================================================== -->
+		<mkdir dir="${build}/jar"/>
+		<jar destfile="${build}/jar/phazeGrammar.jar"
+			basedir="${build}/antlr/classes">
+
+		<manifest>
+			<attribute name="ANTLR4" value="phazeGrammar"/>
+		</manifest>
+		</jar>
+
+	</target>
+
+	<target name="compile" depends="grammar" description="compile source">
+	</target>
+<!--
+	<target name="compile" depends="init" description="compile source">
+		<javac srcdir="${src}" destdir="${build}"/>
+	</target>
+
+-->
+
+	<!-- ======================================================================!
+	 ! Initialize the build structure
+	 !======================================================================= -->
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+
+		<!-- Create the build directory -->
+		<mkdir dir="${build}"/>
+	</target>
+
+	<!-- ======================================================================!
+	 ! Clean the build
+	 !======================================================================= -->
+	<target name="clean"
+		description="clean up">
+		<delete dir="${build}"/>
+	</target>
+
+	<!-- ======================================================================!
+	 ! Find ANTLR4 in CLASSPATH
+	 !======================================================================= -->
+	<target name="prog_antlr" depends="init">
+		<whichresource property="antlr.in.classpath"
+			class="org.antlr.v4.Tool"/>
+
+		<fail message="ANTLR4 not found via CLASSPATH ${java.class.path}">
+			<condition>
+				<not>
+					<isset property="antlr.in.classpath"/>
+				</not>
+			</condition>
+		</fail>
+
+		<echo message="ANTLR4 found via CLASSPATH"/>
+	</target>
+
+</project>
