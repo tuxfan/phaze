@@ -15,11 +15,11 @@ echo "Generating configure.ac"
 config/create_configure_ac $1 > configure.ac
 
 #------------------------------------------------------------------------------#
-# Generate Makefile.am in lib directory
+# Generate Makefile.am in bin directory
 #------------------------------------------------------------------------------#
-#echo "Generating lib/Makefile.am"
-#[ ! -d lib ] && mkdir lib
-#config/create_lib_am > lib/Makefile.am
+echo "Generating bin/Makefile.am"
+[ ! -d bin ] && mkdir bin
+config/create_bin_am > bin/Makefile.am
 
 #------------------------------------------------------------------------------#
 # Call aclocal to generate m4 file
