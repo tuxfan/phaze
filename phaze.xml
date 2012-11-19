@@ -37,8 +37,12 @@
 		<jar destfile="${build}/jar/phaze.jar"
 			basedir="${build}/classes">
 
+<!--
+		<zipfileset includes="**/*.class" src="lib/main/some.jar"/>
+-->
+
 		<manifest>
-			<attribute name="Main-Class" value="phaze"/>
+			<attribute name="Main-Class" value="Phaze.Main"/>
 		</manifest>
 		</jar>
 	</target>

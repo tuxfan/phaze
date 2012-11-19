@@ -2,12 +2,14 @@
  * Main phaze driver
  *----------------------------------------------------------------------------*/
 
+package Phaze;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-public class Phaze {
+public class Main {
 
 	public static void main(String [] args) throws Exception {
 		String inputFile = null;
@@ -45,4 +47,4 @@ public class Phaze {
 		System.out.println();
 	} // main
 
-} // class Phaze
+} // class Main

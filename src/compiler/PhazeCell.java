@@ -2,6 +2,8 @@
  * Phaze cell handler
  *----------------------------------------------------------------------------*/
 
+package Phaze;
+
 public class PhazeCell extends phazeBaseListener {
 
 	@Override

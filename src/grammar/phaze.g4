@@ -6,6 +6,10 @@ grammar phaze;
 
 import common;
 
+@header {
+	package Phaze;
+}
+
 init : '{' value (',' value)* '}';
 
 value :
