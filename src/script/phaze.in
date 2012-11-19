@@ -1,0 +1,5 @@
+#! /usr/bin/env
+
+export CLASSPATH=$CLASSPATH:INSTALL_DIR/java
+
+java Phaze

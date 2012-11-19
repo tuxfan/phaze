@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------#
 
 all: phaze.xml
-	@(ant -buildfile phaze.xml compile)
+	@(ant -buildfile phaze.xml phaze)
 
 grammar: phaze.xml
 	@(ant -buildfile phaze.xml grammar)
