@@ -19,7 +19,7 @@ public class PhazeCell extends phazeBaseListener {
 	@Override
 	public void enterValue(phazeParser.ValueContext ctx) {
 		// Assumes no nested array initializers
-		int value = Integer.valueOf(ctx.INT().getText());
+		int value = Integer.valueOf(ctx.INTEGER().getText());
 		System.out.printf("\\u%04x", value);
 	} // enterValue
 

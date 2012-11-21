@@ -1,37 +1,20 @@
 /*----------------------------------------------------------------------------*
- * Common lexer rules
+ * Base C language grammar adapted from the antlr3 example C.g created by
+ * Terrence Parr.  Parr credits Jutta Degener's 1995 ANSI C yacc grammar.
+ *
+ * The original files and comment are available from http://www.antlr.org
  *----------------------------------------------------------------------------*/
 
-lexer grammar common;
+ grammar cbase;
 
-// letters
-fragment
-LETTER
-	: '$'
-	| [a-zA-Z]
-	| '-'
-	;
+ import common;
 
-// integer
-INTEGER
-	: [0-9]+
-	;
-
-// integers
-
-// newline
-NEWLINE
-	: '\r'? '\n'
-	;
-
-// whitespace
-WHITESPACE
-	: [ \t]+ -> skip
-	;
-
-// identifiers
-IDENTIFIER
-	: LETTER (LETTER|INTEGER)*
+ type_specifier
+ 	: 'int'
+	| 'signed'
+	| 'unsigned'
+	| 'float'
+	| 'double'
 	;
 
 /*----------------------------------------------------------------------------*

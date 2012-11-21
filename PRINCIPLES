@@ -1,0 +1,9 @@
+#--------------------------------------------------------------------------------------------------#
+# Phaze principles
+#--------------------------------------------------------------------------------------------------#
+
+- Domain specific language for multiphase hydrodynamics
+- No memory management or explicit pointer information in phaze language
+- Data parallel handlers, i.e., stream reduction for state size changes
+- Generates C language library (not tied to DSL)
+- Generated code must be human-readable
