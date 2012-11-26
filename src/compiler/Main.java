@@ -19,11 +19,16 @@ public class Main {
 			inputFile = args[0];
 		} // if
 
-		// set the default input
+		// set the default streams
 		InputStream is = System.in;
+		String baseName = "aout";
 
+		// if input file specified, set the new stream
 		if(inputFile != null) {
 			is = new FileInputStream(inputFile);
+
+			// set output base
+			baseName = inputFile.substring(0, inputFile.lastIndexOf('.'));
 		} // if
 
 		// create a CharStream that reads from standard input
@@ -43,10 +48,7 @@ public class Main {
 
 		ParseTreeWalker walker = new ParseTreeWalker();
 
-		walker.walk(new PhazeCell(), tree);
-
-		// print LISP-style tree
-		System.out.println();
+		walker.walk(new PhazeHandler(baseName), tree);
 	} // main
 
 } // class Main

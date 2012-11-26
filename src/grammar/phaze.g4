@@ -11,22 +11,22 @@ import common;
 }
 
 init
-	: type_decl* EOF
+	: typeDecl* EOF
 	;
 
-type_decl
-	: cell_decl
+typeDecl
+	: cellDecl
 	;
 
-cell_decl
-	: 'cell' cell_body
+cellDecl
+	: 'cell' cellBody
 	;
 
-cell_body
-	: '{' var_decl* '}'
+cellBody
+	: '{' varDecl* '}'
 	;
 
-var_decl
+varDecl
 	: ';'
 	| type ID ';'
 	;
