@@ -2,11 +2,11 @@
 # Top-level Makefile for phaze project
 #------------------------------------------------------------------------------#
 
-all: phaze.xml
-	@(ant -buildfile phaze.xml phaze)
+all: build.xml
+	@(ant -buildfile build.xml phaze)
 
-grammar: phaze.xml
-	@(ant -buildfile phaze.xml grammar)
+grammar: build.xml
+	@(ant -buildfile build.xml grammar)
 
-clean: phaze.xml
-	@(ant -buildfile phaze.xml clean)
+clean: build.xml
+	@(ant -buildfile build.xml clean)

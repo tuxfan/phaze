@@ -14,10 +14,12 @@ public class Main {
 	public static void main(String [] args) throws Exception {
 		String inputFile = null;
 
+		// check command-line arguments
 		if(args.length > 0) {
 			inputFile = args[0];
 		} // if
 
+		// set the default input
 		InputStream is = System.in;
 
 		if(inputFile != null) {

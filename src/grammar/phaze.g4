@@ -4,49 +4,40 @@
 
 grammar phaze;
 
-import cbase;
+import common;
 
 @header {
 	package Phaze;
 }
 
-/*
-cell_specifier
-	: cell IDENTIFIER? '{' cell_declaration_list '}'
-	| cell IDENTIFIER
+init
+	: type_decl* EOF
 	;
 
-cell
-	: 'cell'
+type_decl
+	: cell_decl
 	;
 
-cell_declaration_list
-	: cell_declaration+
+cell_decl
+	: 'cell' cell_body
 	;
 
-cell_declaration
-	: specifier_qualifier_list cell_declarator_list ';'
+cell_body
+	: '{' var_decl* '}'
 	;
 
-specifier_qualifier_list
-	: ( type_qualifier | type_specifier )+
+var_decl
+	: ';'
+	| type ID ';'
 	;
 
-cell_declarator_list
-	: cell_declarator (',' cell_declarator)*
+type
+	: primitive
 	;
 
-cell_declarator
-	: declarator (':' constant_expression)?
-	| ':' constant_expression
-	;
-*/
-
-init : '{' value (',' value)* '}';
-
-value
-	: init
-	| INTEGER
+primitive
+	: 'integer'
+	| 'real'
 	;
 
 /*----------------------------------------------------------------------------*

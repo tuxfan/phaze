@@ -13,25 +13,18 @@ LETTER
 	;
 
 // integer
-INTEGER
+INT
 	: [0-9]+
 	;
 
-// integers
-
-// newline
-NEWLINE
-	: '\r'? '\n'
-	;
-
 // whitespace
-WHITESPACE
-	: [ \t]+ -> skip
+WS
+	: [ \r\t\u000C\n]+ -> channel(HIDDEN)
 	;
 
 // identifiers
-IDENTIFIER
-	: LETTER (LETTER|INTEGER)*
+ID
+	: LETTER (LETTER|INT)*
 	;
 
 /*----------------------------------------------------------------------------*
