@@ -2,11 +2,14 @@
 # Top-level Makefile for phaze project
 #------------------------------------------------------------------------------#
 
+ANT = ant
+LOGGER = -logger org.apache.tools.ant.listener.AnsiColorLogger
+
 all: build.xml
-	@(ant -buildfile build.xml phaze)
+	@(${ANT} ${LOGGER} phaze)
 
 grammar: build.xml
-	@(ant -buildfile build.xml grammar)
+	@(${ANT} ${LOGGER} grammar)
 
 clean: build.xml
-	@(ant -buildfile build.xml clean)
+	@(${ANT} ${LOGGER} clean)

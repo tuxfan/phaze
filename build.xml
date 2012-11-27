@@ -37,7 +37,10 @@
 		<jar destfile="${build}/jar/phaze.jar"
 			basedir="${build}/classes">
 
-		<zipfileset includes="**/*.class" src="/opt/antlr4/lib/antlr.jar"/>
+		<zipfileset includes="**/*.class"
+			src="/opt/antlr4/lib/antlr.jar"/>
+		<zipfileset includes="**/*.class"
+			src="/opt/java/commons-cli-1.2/commons-cli-1.2.jar"/>
 
 		<manifest>
 			<attribute name="Main-Class" value="Phaze.Main"/>
