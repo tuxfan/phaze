@@ -22,6 +22,8 @@ public class Main {
 
 		opts.addOption("h", "help", false,
 			"print this message and exit." );
+		opts.addOption("align", false,
+			"force natural alignment of data structures." );
 
 		// check command-line arguments
 		if(args.length < 1) {
@@ -35,35 +37,28 @@ public class Main {
 		 *----------------------------------------------------------------------*/
 
 		CommandLineParser gnu = new GnuParser();
-		
+		PhazeOptions phzOpts = new PhazeOptions();
+
 		try {
 			CommandLine line = gnu.parse(opts, args);
+
+			// FIXME: dummy option for testing
+			if(line.hasOption("align")) {
+				phzOpts.align = true;
+			} // if
 		}
 		catch(ParseException exp) {
 			System.err.println("Parsing failed.  Reason: " + exp.getMessage());
 		} // try
 
-
-// FIXME
-//System.out.println("args: " + args.length);
-
+		// set the input file
 		String inputFile = args[args.length-1];
-System.out.println("input file: " + inputFile);
 
-System.exit(1);
-////////////
+		// create an input stream for antlr
+		InputStream is = new FileInputStream(inputFile);
 
-		// set the default streams
-		InputStream is = System.in;
-		String baseName = "aout";
-
-		// if input file specified, set the new stream
-		if(inputFile != null) {
-			is = new FileInputStream(inputFile);
-
-			// set output base
-			baseName = inputFile.substring(0, inputFile.lastIndexOf('.'));
-		} // if
+		// set the basename to use for output
+		String baseName = inputFile.substring(0, inputFile.lastIndexOf('.'));
 
 		// create a CharStream that reads from standard input
 		ANTLRInputStream input = new ANTLRInputStream(is);
@@ -80,9 +75,11 @@ System.exit(1);
 		// begin parsing at init rule
 		ParseTree tree = parser.init();
 
+		// create a tree walker
 		ParseTreeWalker walker = new ParseTreeWalker();
 
-		walker.walk(new PhazeHandler(baseName), tree);
+		// process the input
+		walker.walk(new PhazeHandler(baseName, phzOpts), tree);
 	} // main
 
 } // class Main

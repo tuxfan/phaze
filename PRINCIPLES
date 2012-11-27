@@ -7,3 +7,16 @@
 - Data parallel handlers, i.e., stream reduction for state size changes
 - Generates C language library (not tied to DSL)
 - Generated code must be human-readable
+
+Cell properties:
+
+	number of materials
+	access to material information
+
+	type phz_cell_get_x(integer id);
+	void phz_cell_set_x(integer id);
+
+	integer phz_cell_num_materials(integer id);
+
+	type phz_mat_get_r(integer cellid, integer matid);
+	void phz_mat_set_r(integer cellid, integer matid);
