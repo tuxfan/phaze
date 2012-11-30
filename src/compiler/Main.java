@@ -78,8 +78,14 @@ public class Main {
 		// create a tree walker
 		ParseTreeWalker walker = new ParseTreeWalker();
 
+		// create phaze handler
+		PhazeHandler phzHandler = new PhazeHandler(baseName, phzOpts);
+
 		// process the input
-		walker.walk(new PhazeHandler(baseName, phzOpts), tree);
+		walker.walk(phzHandler, tree);
+
+		// need this to flush output
+		phzHandler.close();
 	} // main
 
 } // class Main

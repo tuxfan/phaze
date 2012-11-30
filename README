@@ -1,0 +1,8 @@
+#------------------------------------------------------------------------------#
+# README
+#------------------------------------------------------------------------------#
+
+Set local build properties in 'build.properties'.  There is a template file
+in the 'config' subdirectory.
+
+To build, just type 'make'.

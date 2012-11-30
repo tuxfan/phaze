@@ -1,0 +1,23 @@
+/*----------------------------------------------------------------------------*
+ * Example phaze configuration
+ *----------------------------------------------------------------------------*/
+
+cell {
+	real x, y, z;
+}
+
+material {
+	real r;
+	real ru, rv, rw;
+	real rE;
+}
+
+mixture {
+	real d;
+	real t;
+	real he3;
+	real he4;
+	real li6;
+	real be7;
+	real b11;
+}

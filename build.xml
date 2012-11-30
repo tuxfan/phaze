@@ -5,6 +5,9 @@
 <project name="MyProject" default="phaze" basedir=".">
 	<description>Phaze DSL Project</description>
 
+	<!-- read machine-specific properties for this build -->
+	<property file="build.properties"/>
+
 	<!-- set global properties for this build -->
 	<property name="src" location="${basedir}/src"/>
 	<property name="build" location="${basedir}/build"/>
@@ -37,10 +40,8 @@
 		<jar destfile="${build}/jar/phaze.jar"
 			basedir="${build}/classes">
 
-		<zipfileset includes="**/*.class"
-			src="/opt/antlr4/lib/antlr.jar"/>
-		<zipfileset includes="**/*.class"
-			src="/opt/java/commons-cli-1.2/commons-cli-1.2.jar"/>
+		<zipfileset includes="**/*.class" src="${antlr4.jar}"/>
+		<zipfileset includes="**/*.class" src="${cli.jar}"/>
 
 		<manifest>
 			<attribute name="Main-Class" value="Phaze.Main"/>
@@ -78,10 +79,32 @@
 		</javac>
 
 		<!-- ===================================================================!
-		 ! FIXME
+		 ! Create wrapper
 		 !=================================================================== -->
 		<mkdir dir="${build}/bin"/>
+		<copy file="src/script/phaze.in" tofile="build/bin/phaze">
+			<filterset>
+				<filter token="PATH" value="${build}/jar"/>
+			</filterset>
+		</copy>
+		<chmod file="build/bin/phaze" perm="+x"/>
+	</target>
 
+	<!-- ======================================================================!
+	 ! Initialize the build structure
+	 !======================================================================= -->
+	<target name="install">
+		<mkdir dir="${install}/phaze/jar"/>
+		<mkdir dir="${install}/phaze/bin"/>
+
+		<copy file="src/script/phaze.in" tofile="${install}/phaze/bin/phaze">
+			<filterset>
+				<filter token="PATH" value="${install}/phaze/jar"/>
+			</filterset>
+		</copy>
+		<chmod file="${install}/phaze/bin/phaze" perm="+x"/>
+
+		<copy file="build/jar/phaze.jar" todir="${install}/phaze/jar"/>
 	</target>
 
 	<!-- ======================================================================!

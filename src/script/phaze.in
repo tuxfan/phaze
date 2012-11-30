@@ -1,5 +1,3 @@
-#! /usr/bin/env
+#! /usr/bin/env bash
 
-export CLASSPATH=$CLASSPATH:INSTALL_DIR/java
-
-java Phaze
+java -jar @PATH@/phaze.jar $*
