@@ -3,21 +3,22 @@
  *----------------------------------------------------------------------------*/
 
 cell {
-	real x, y, z;
+	int32_t id;
+	float x, y, z;
 }
 
 material {
-	real r;
-	real ru, rv, rw;
-	real rE;
+	float r;
+	float ru, rv, rw;
+	float rE;
 }
 
 mixture {
-	real d;
-	real t;
-	real he3;
-	real he4;
-	real li6;
-	real be7;
-	real b11;
+	float d;
+	float t;
+	float he3;
+	float he4;
+	float li6;
+	float be7;
+	float b11;
 }

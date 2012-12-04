@@ -109,18 +109,7 @@ public class PhazeHandler extends phazeBaseListener {
 		while(ita.hasNext()) {
 			PhazeVariable var = ita.next();
 			System.out.println(var.toString());
-
-			String varStr = new String();
-			switch(var.type) {
-				case real:
-					varStr = "double ";
-					break;
-				case integer:
-					varStr = "int ";
-					break;
-			} // switch
-
-			header_.println("\t" + varStr + var.id + ";");
+			header_.println("\t" + var.toString() + ";");
 		} // while
 
 		header_.println("}; // struct phz_cell");
@@ -172,7 +161,7 @@ public class PhazeHandler extends phazeBaseListener {
 		} // if
 
 		PhazeType type =
-			PhazeVariable.stringToType(ctx.type().primitive().getText());
+			PhazeType.fromString(ctx.type().primitive().getText());
 
 		for(int i=0; i<ctx.ID().size(); ++i) {
 			PhazeVariable var = new PhazeVariable(type, ctx.ID(i).getText());
