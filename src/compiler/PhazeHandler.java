@@ -20,12 +20,12 @@ public class PhazeHandler extends phazeBaseListener {
 
 	boolean cellDefined_;
 	boolean matDefined_;
-	boolean mixDefined_;
+	boolean compDefined_;
 
 	PhazeStruct current_;
 	PhazeStruct cellStruct_;
 	PhazeStruct matStruct_;
-	PhazeStruct mixStruct_;
+	PhazeStruct compStruct_;
 
 	/*-------------------------------------------------------------------------*
 	 * Constructor
@@ -35,12 +35,12 @@ public class PhazeHandler extends phazeBaseListener {
 		// member initialization
 		cellDefined_ = false;
 		matDefined_ = false;
-		mixDefined_ = false;
+		compDefined_ = false;
 
 		current_ = null;
 		cellStruct_ = new PhazeStruct();
 		matStruct_ = new PhazeStruct();
-		mixStruct_ = new PhazeStruct();
+		compStruct_ = new PhazeStruct();
 
 		// save the base name for 'close' method
 		baseName_ = baseName;
@@ -138,16 +138,16 @@ public class PhazeHandler extends phazeBaseListener {
 	} // exitMatBody
 
 	/*-------------------------------------------------------------------------*
-	 * Mixture functions
+	 * Composition functions
 	 *-------------------------------------------------------------------------*/
 
 	@Override
-	public void enterMixBody(phazeParser.MixBodyContext ctx) {
-	} // enterMixBody
+	public void enterCompBody(phazeParser.CompBodyContext ctx) {
+	} // enterCompBody
 
 	@Override
-	public void exitMixBody(phazeParser.MixBodyContext ctx) {
-	} // exitMixBody
+	public void exitCompBody(phazeParser.CompBodyContext ctx) {
+	} // exitCompBody
 
 	/*-------------------------------------------------------------------------*
 	 * Variable functions

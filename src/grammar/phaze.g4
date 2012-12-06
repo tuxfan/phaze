@@ -17,7 +17,9 @@ init
 typeDecl
 	: cellDecl
 	| matDecl
-	| mixDecl
+	| compDecl
+	| isoDecl
+	| reaDecl
 	;
 
 /*----------------------------------------------------------------------------*
@@ -45,14 +47,38 @@ matBody
 	;
 
 /*----------------------------------------------------------------------------*
- * Mixture definition
+ * Composition definition
  *----------------------------------------------------------------------------*/
 
-mixDecl
-	: 'mixture' mixBody
+compDecl
+	: 'composition' compBody
 	;
 
-mixBody
+compBody
+	: '{' varDecl* '}'
+	;
+
+/*----------------------------------------------------------------------------*
+ * Isotope definition
+ *----------------------------------------------------------------------------*/
+
+isoDecl
+	: 'isotope' isoBody
+	;
+
+isoBody
+	: '{' varDecl* '}'
+	;
+
+/*----------------------------------------------------------------------------*
+ * Reaction definition
+ *----------------------------------------------------------------------------*/
+
+reaDecl
+	: 'reaction' reaBody
+	;
+
+reaBody
 	: '{' varDecl* '}'
 	;
 
@@ -68,6 +94,7 @@ varDecl
 
 type
 	: primitive
+	| custom
 	;
 
 primitive
@@ -76,6 +103,11 @@ primitive
 	| 'int64_t'
 	| 'float'
 	| 'double'
+	;
+
+custom
+	: 'position'
+	| 'vector'
 	;
 
 /*----------------------------------------------------------------------------*
