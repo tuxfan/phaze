@@ -21,9 +21,19 @@ public class Main {
 		Options opts = new Options();
 
 		opts.addOption("h", "help", false,
-			"print this message and exit." );
-		opts.addOption("align", false,
-			"force natural alignment of data structures." );
+			"print this message and exit.");
+
+		opts.addOption(OptionBuilder.withArgName("3")
+			.withLongOpt("dimension")
+			.hasArg()
+			.withDescription("specify the dimension [1,2,3]")
+			.create("d"));
+
+		opts.addOption(OptionBuilder.withArgName("AoS")
+			.withLongOpt("layout")
+			.hasArg()
+			.withDescription("specify the data layout [AoS,SoA]")
+			.create("l"));
 
 		// check command-line arguments
 		if(args.length < 1) {
@@ -37,18 +47,14 @@ public class Main {
 		 *----------------------------------------------------------------------*/
 
 		CommandLineParser gnu = new GnuParser();
-		PhazeOptions phzOpts = new PhazeOptions();
+		CommandLine line = null;
 
 		try {
-			CommandLine line = gnu.parse(opts, args);
-
-			// FIXME: dummy option for testing
-			if(line.hasOption("align")) {
-				phzOpts.align = true;
-			} // if
+			line = gnu.parse(opts, args);
 		}
 		catch(ParseException exp) {
 			System.err.println("Parsing failed.  Reason: " + exp.getMessage());
+			System.exit(1);
 		} // try
 
 		// set the input file
@@ -79,13 +85,13 @@ public class Main {
 		ParseTreeWalker walker = new ParseTreeWalker();
 
 		// create phaze handler
-		PhazeHandler phzHandler = new PhazeHandler(baseName, phzOpts);
+		PhazeHandler phzHandler = new PhazeHandler(baseName, line);
 
 		// process the input
 		walker.walk(phzHandler, tree);
 
-		// need this to flush output
-		phzHandler.close();
+		// write output
+		phzHandler.write();
 	} // main
 
 } // class Main

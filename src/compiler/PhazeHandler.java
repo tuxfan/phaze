@@ -4,6 +4,7 @@
 
 package Phaze;
 
+import org.apache.commons.cli.*;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -13,70 +14,60 @@ public class PhazeHandler extends phazeBaseListener {
 	 * Private data members
 	 *-------------------------------------------------------------------------*/
 
-	private String baseName_;
-	private PrintWriter source_;
-	private PrintWriter header_;
-	private PhazeBoilerPlate bp_;
+	String baseName_;
 
 	boolean cellDefined_;
 	boolean matDefined_;
 	boolean compDefined_;
+// FIXME
 
 	PhazeStruct current_;
-	PhazeStruct cellStruct_;
-	PhazeStruct matStruct_;
-	PhazeStruct compStruct_;
+	Hashtable<String, PhazeStruct> structs_;
+	CommandLine line_;
 
 	/*-------------------------------------------------------------------------*
 	 * Constructor
 	 *-------------------------------------------------------------------------*/
 
-	public PhazeHandler(String baseName, PhazeOptions opts) throws Exception {
+	public PhazeHandler(String baseName, CommandLine line) throws Exception {
+		// save input parameters
+		baseName_ = baseName;
+		line_ = line;
+
 		// member initialization
 		cellDefined_ = false;
 		matDefined_ = false;
 		compDefined_ = false;
 
 		current_ = null;
-		cellStruct_ = new PhazeStruct();
-		matStruct_ = new PhazeStruct();
-		compStruct_ = new PhazeStruct();
-
-		// save the base name for 'close' method
-		baseName_ = baseName;
-
-		// create output streams
-		source_ = new PrintWriter(baseName + ".c");
-		header_ = new PrintWriter(baseName + ".h");
-
-		// boiler plate constants
-		bp_ = new PhazeBoilerPlate();
+		structs_ = new Hashtable<String, PhazeStruct>();
+		structs_.put("cell", new PhazeStruct());
+		structs_.put("material", new PhazeStruct());
+		structs_.put("composition", new PhazeStruct());
+		structs_.put("isotope", new PhazeStruct());
+		structs_.put("reaction", new PhazeStruct());
 
 		// source file initialization
-		source_.print(String.format(bp_.genericHeader,
-			"Phaze implementation of " + baseName + " input file"));
-		source_.print("\n#include <" + baseName + ".h>\n");
-
-		// header file initialization
-		header_.print(String.format(bp_.genericHeader,
-			"Phaze interface for " + baseName + " input file"));
-		header_.print(String.format("\n#ifndef %s_h\n", baseName));
-		header_.print(String.format("#define %s_h\n\n", baseName));
+//		source_.print(String.format(bp_.genericHeader,
+//			"Phaze implementation of " + baseName + " input file"));
+//		source_.print("\n#include <" + baseName + ".h>\n");
 	} // PhazeHandler
 
 	/*-------------------------------------------------------------------------*
-	 * Kluge destructor
+	 * Write output
 	 *-------------------------------------------------------------------------*/
 
-	public void close() {
+	public void write() {
+		PhazeWriter writer = new PhazeBasicAoSWriter();
 
-		// header file finalization
-		header_.print(String.format("\n#endif // %s_h\n", baseName_));
-
-		// close output streams
-		source_.close();
-		header_.close();
-	} // close
+		try {
+			writer.writeHeader(structs_, baseName_, line_);
+		}
+		catch(Exception e) {
+			System.err.print("error: write header failed\n");
+			System.exit(1);
+		}
+	} // write
 
 	/*-------------------------------------------------------------------------*
 	 * Cell functions
@@ -90,29 +81,29 @@ public class PhazeHandler extends phazeBaseListener {
 			System.exit(1);
 		} // if
 
-		current_ = cellStruct_;
+		current_ = structs_.get("cell");
 	} // enterCellBody
 
 	@Override
 	public void exitCellBody(phazeParser.CellBodyContext ctx) {
 // FIXME: This needs to move into a class
 		// print cell struct name
-		header_.print(bp_.commentLineStart);
-		header_.println(" * cell structure prototype");
-		header_.println(bp_.commentLineEnd);
+//		header_.print(bp_.commentLineStart);
+//		header_.println(" * cell structure prototype");
+//		header_.println(bp_.commentLineEnd);
 
-		header_.println("struct phz_cell {");
+//		header_.println("struct phz_cell {");
 
-		Set<PhazeVariable> vars = cellStruct_.variables();
+		Set<PhazeVariable> vars = structs_.get("cell").variables();
 
 		Iterator<PhazeVariable> ita = vars.iterator();
 		while(ita.hasNext()) {
 			PhazeVariable var = ita.next();
-			System.out.println(var.toString());
-			header_.println("\t" + var.toString() + ";");
+//			System.out.println(var.toString());
+//			header_.println("\t" + var.toString() + ";");
 		} // while
 
-		header_.println("}; // struct phz_cell");
+//		header_.println("}; // struct phz_cell");
 
 		cellDefined_ = true;
 	} // exitCellBody
@@ -129,7 +120,7 @@ public class PhazeHandler extends phazeBaseListener {
 			System.exit(1);
 		} // if
 
-		current_ = matStruct_;
+		current_ = structs_.get("material");
 	} // enterMatBody
 
 	@Override
