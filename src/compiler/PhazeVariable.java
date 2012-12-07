@@ -6,11 +6,17 @@ package Phaze;
 
 import java.util.*;
 
+/*----------------------------------------------------------------------------*
+ * PhazeType enumeration
+ *----------------------------------------------------------------------------*/
+
 enum PhazeType {
-	int32 { public String toString() { return "int32_t"; } },
-	int64 { public String toString() { return "int64_t"; } },
-	real32 { public String toString() { return "float"; } },
-	real64 { public String toString() { return "double"; } },
+	int32 { public String toString() { return "int32_t"; }},
+	int64 { public String toString() { return "int64_t"; }},
+	real32 { public String toString() { return "float"; }},
+	real64 { public String toString() { return "double"; }},
+	position { public String toString() { return "position"; }},
+	vector { public String toString() { return "vector"; }},
 	unknown;
 
 	private static final Map<String, String> strmap_ =
@@ -22,6 +28,8 @@ enum PhazeType {
 		strmap_.put("int64_t", "int64");
 		strmap_.put("float", "real32");
 		strmap_.put("double", "real64");
+		strmap_.put("position", "position");
+		strmap_.put("vector", "vector");
 	} // scope
 
 	private static final int size_ = EnumSet.allOf(PhazeType.class).size();
@@ -33,13 +41,25 @@ enum PhazeType {
 		} // for
 	} // scope
 
+	/*-------------------------------------------------------------------------*
+	 * fromInt
+	 *-------------------------------------------------------------------------*/
+
 	public static PhazeType fromInt(int i) {
 		return values_[i];
 	} // fromInt
 
+	/*-------------------------------------------------------------------------*
+	 * fromString
+	 *-------------------------------------------------------------------------*/
+
 	public static PhazeType fromString(String str) {
 		return PhazeType.valueOf(strmap_.get(str));
 	} // fromString
+
+	/*-------------------------------------------------------------------------*
+	 * toInt
+	 *-------------------------------------------------------------------------*/
 
 	public static int toInt(PhazeType t) {
 		return t.ordinal();
@@ -51,10 +71,16 @@ public class PhazeVariable implements Comparable<PhazeVariable> {
 
 	public PhazeType type;
 	public String id;
+	public boolean isStatic;
 
 	PhazeVariable(PhazeType type_, String id_) {
+		this(type_, id_, false);
+	}
+
+	PhazeVariable(PhazeType type_, String id_, boolean isStatic_) {
 		type = type_;
 		id = id_;
+		isStatic = isStatic_;
 	} // PhazeVariable
 
 	public int compareTo(PhazeVariable pv) {
@@ -67,7 +93,7 @@ public class PhazeVariable implements Comparable<PhazeVariable> {
 	} // compareTo
 
 	public String toString() {
-		return type.toString() + " " + id;
+		return (isStatic ? "static " : "") + type.toString() + " " + id;
 	} // toString
 
 } // class PhazeVariable

@@ -14,6 +14,11 @@ ID
 	: LETTER (LETTER|DIGIT)*
 	;
 
+// integer
+INT
+	: [0-9]+
+	;
+
 // C-style comment
 COMMENT
 	: '/*' .*? '*/' -> channel(HIDDEN)
