@@ -36,10 +36,10 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		Set<PhazeVariable> vars = structs.get("cell").variables();
 
 		file_.print(bp_.commentLineStart);
-		file_.println(" * cell_data_t structure prototype");
+		file_.println(" * cell_t structure prototype");
 		file_.println(bp_.commentLineEnd);
 
-		file_.println("struct cell_data_t {");
+		file_.println("struct cell_t {");
 
 // FIXME: NEED TO HANDLE STORAGE CLASSES
 
@@ -61,7 +61,42 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 			} // switch
 		} // while
 
-		file_.println("} // struct cell_data_t\n");
+		file_.println("} // struct cell_t\n");
+
+		/*----------------------------------------------------------------------*
+		 *
+		 *----------------------------------------------------------------------*/
+
+		vars = structs.get("material").variables();
+
+		file_.print(bp_.commentLineStart);
+		file_.println(" * material_t structure prototype");
+		file_.println(bp_.commentLineEnd);
+
+		file_.println("struct material_t {");
+
+// FIXME: NEED TO HANDLE STORAGE CLASSES
+
+		ita = vars.iterator();
+		while(ita.hasNext()) {
+			PhazeVariable var = ita.next();
+
+			switch(var.type) {
+				case position:
+				case vector:
+					file_.println("\tdouble " + var.id + "[" + dim + "];");
+					break;
+				default:
+					file_.println("\t" + var.toString());
+					break;
+			} // switch
+		} // while
+
+		file_.println("} // struct material_t\n");
+
+//
+//
+//
 
 		// static interface
 		file_.print(bp_.staticInterface);

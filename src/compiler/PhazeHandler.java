@@ -19,7 +19,8 @@ public class PhazeHandler extends phazeBaseListener {
 	boolean cellDefined_;
 	boolean matDefined_;
 	boolean compDefined_;
-// FIXME
+	boolean isoDefined_;
+	boolean reaDefined_;
 
 	PhazeStruct current_;
 	Hashtable<String, PhazeStruct> structs_;
@@ -38,6 +39,8 @@ public class PhazeHandler extends phazeBaseListener {
 		cellDefined_ = false;
 		matDefined_ = false;
 		compDefined_ = false;
+		isoDefined_ = false;
+		reaDefined_ = false;
 
 		current_ = null;
 		structs_ = new Hashtable<String, PhazeStruct>();
@@ -46,11 +49,6 @@ public class PhazeHandler extends phazeBaseListener {
 		structs_.put("composition", new PhazeStruct());
 		structs_.put("isotope", new PhazeStruct());
 		structs_.put("reaction", new PhazeStruct());
-
-		// source file initialization
-//		source_.print(String.format(bp_.genericHeader,
-//			"Phaze implementation of " + baseName + " input file"));
-//		source_.print("\n#include <" + baseName + ".h>\n");
 	} // PhazeHandler
 
 	/*-------------------------------------------------------------------------*
@@ -86,25 +84,6 @@ public class PhazeHandler extends phazeBaseListener {
 
 	@Override
 	public void exitCellBody(phazeParser.CellBodyContext ctx) {
-// FIXME: This needs to move into a class
-		// print cell struct name
-//		header_.print(bp_.commentLineStart);
-//		header_.println(" * cell structure prototype");
-//		header_.println(bp_.commentLineEnd);
-
-//		header_.println("struct phz_cell {");
-
-		Set<PhazeVariable> vars = structs_.get("cell").variables();
-
-		Iterator<PhazeVariable> ita = vars.iterator();
-		while(ita.hasNext()) {
-			PhazeVariable var = ita.next();
-//			System.out.println(var.toString());
-//			header_.println("\t" + var.toString() + ";");
-		} // while
-
-//		header_.println("}; // struct phz_cell");
-
 		cellDefined_ = true;
 	} // exitCellBody
 
@@ -134,11 +113,59 @@ public class PhazeHandler extends phazeBaseListener {
 
 	@Override
 	public void enterCompBody(phazeParser.CompBodyContext ctx) {
+		// make sure there is only one definition
+		if(compDefined_) {
+			System.err.print("error: composition already defined\n");
+			System.exit(1);
+		} // if
+
+		current_ = structs_.get("composition");
 	} // enterCompBody
 
 	@Override
 	public void exitCompBody(phazeParser.CompBodyContext ctx) {
+		compDefined_ = true;
 	} // exitCompBody
+
+	/*-------------------------------------------------------------------------*
+	 * Isotope functions
+	 *-------------------------------------------------------------------------*/
+
+	@Override
+	public void enterIsoBody(phazeParser.IsoBodyContext ctx) {
+		// make sure there is only one definition
+		if(isoDefined_) {
+			System.err.print("error: isotope already defined\n");
+			System.exit(1);
+		} // if
+
+		current_ = structs_.get("isotope");
+	} // enterIsoBody
+
+	@Override
+	public void exitIsoBody(phazeParser.IsoBodyContext ctx) {
+		isoDefined_ = true;
+	} // exitIsoBody
+
+	/*-------------------------------------------------------------------------*
+	 * Reaction functions
+	 *-------------------------------------------------------------------------*/
+
+	@Override
+	public void enterReaBody(phazeParser.ReaBodyContext ctx) {
+		// make sure there is only one definition
+		if(reaDefined_) {
+			System.err.print("error: reaction already defined\n");
+			System.exit(1);
+		} // if
+
+		current_ = structs_.get("reaction");
+	} // enterReaBody
+
+	@Override
+	public void exitReaBody(phazeParser.ReaBodyContext ctx) {
+		reaDefined_ = true;
+	} // exitReaBody
 
 	/*-------------------------------------------------------------------------*
 	 * Variable functions

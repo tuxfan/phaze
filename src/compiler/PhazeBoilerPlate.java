@@ -25,13 +25,13 @@ public class PhazeBoilerPlate {
 	public static final String staticInterface = commentLineStart +
 		" * Phaze static interface\n" + commentLineEnd +
 		"\n/* cell interface */\n" +
-		"int32_t phz_get_cell(size_t cid, cell_data_t * cell);\n" +
-		"int32_t phz_set_cell(size_t cid, cell_data_t * cell);\n" +
+		"int32_t phz_get_cell(size_t cid, cell_t * cell);\n" +
+		"int32_t phz_set_cell(size_t cid, cell_t * cell);\n" +
 		"\n/* material interface */\n" +
-		"int32_t phz_num_materials(cell_data_t * cell, size_t * count);\n" +
-		"int32_t phz_get_material(cell_data_t * cell, size_t index,\n" +
+		"int32_t phz_num_materials(cell_t * cell, size_t * count);\n" +
+		"int32_t phz_get_material(cell_t * cell, size_t index,\n" +
 		"	material_t * material);\n" +
-		"int32_t phz_set_material(cell_data_t * cell, size_t index,\n" +
+		"int32_t phz_set_material(cell_t * cell, size_t index,\n" +
 		"	material_t * material);\n" +
 		"\n/* isotope interface */\n" +
 		"int32_t phz_num_isotopes(material_t * material, size_t * count);\n" +
