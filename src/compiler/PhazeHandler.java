@@ -178,12 +178,22 @@ public class PhazeHandler extends phazeBaseListener {
 			System.exit(1);
 		} // if
 
+		// check storage class
+		boolean isStatic = ctx.storage() == null ? false : true;
+
+		// get type
 		PhazeType type =
 			PhazeType.fromString(ctx.type().primitive().getText());
 
 		for(int i=0; i<ctx.ID().size(); ++i) {
-			PhazeVariable var = new PhazeVariable(type, ctx.ID(i).getText());
-			current_.addVariable(new PhazeVariable(type, ctx.ID(i).getText()));
+			// check for array decorations
+			int arraySize = 0;
+			if(ctx.array() != null) {
+				arraySize = Integer.parseInt(ctx.array().INT().getText());
+			} // if
+
+			current_.addVariable(new PhazeVariable(type,
+				ctx.ID(i).getText(), isStatic, arraySize));
 		} // for
 	} // enterVarDecl
 

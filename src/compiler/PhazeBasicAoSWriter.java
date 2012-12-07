@@ -46,6 +46,10 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		int dim = line.hasOption("d") ?
 			Integer.parseInt(line.getOptionValue("d")) : 3;
 
+		/*----------------------------------------------------------------------*
+		 * Iterate variables
+		 *----------------------------------------------------------------------*/
+
 		Iterator<PhazeVariable> ita = vars.iterator();
 		while(ita.hasNext()) {
 			PhazeVariable var = ita.next();
