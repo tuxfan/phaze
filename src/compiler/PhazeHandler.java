@@ -23,6 +23,7 @@ public class PhazeHandler extends phazeBaseListener {
 	boolean reaDefined_;
 
 	PhazeStruct current_;
+	String scope_;
 	Hashtable<String, PhazeStruct> structs_;
 	CommandLine line_;
 
@@ -43,6 +44,7 @@ public class PhazeHandler extends phazeBaseListener {
 		reaDefined_ = false;
 
 		current_ = null;
+		scope_ = null;
 		structs_ = new Hashtable<String, PhazeStruct>();
 		structs_.put("cell", new PhazeStruct());
 		structs_.put("material", new PhazeStruct());
@@ -80,6 +82,7 @@ public class PhazeHandler extends phazeBaseListener {
 		} // if
 
 		current_ = structs_.get("cell");
+		scope_ = "cell";
 	} // enterCellBody
 
 	@Override
@@ -100,6 +103,7 @@ public class PhazeHandler extends phazeBaseListener {
 		} // if
 
 		current_ = structs_.get("material");
+		scope_ = "material";
 	} // enterMatBody
 
 	@Override
@@ -120,6 +124,7 @@ public class PhazeHandler extends phazeBaseListener {
 		} // if
 
 		current_ = structs_.get("composition");
+		scope_ = "composition";
 	} // enterCompBody
 
 	@Override
@@ -140,6 +145,7 @@ public class PhazeHandler extends phazeBaseListener {
 		} // if
 
 		current_ = structs_.get("isotope");
+		scope_ = "isotope";
 	} // enterIsoBody
 
 	@Override
@@ -160,6 +166,7 @@ public class PhazeHandler extends phazeBaseListener {
 		} // if
 
 		current_ = structs_.get("reaction");
+		scope_ = "reaction";
 	} // enterReaBody
 
 	@Override
@@ -193,7 +200,7 @@ public class PhazeHandler extends phazeBaseListener {
 			} // if
 
 			current_.addVariable(new PhazeVariable(type,
-				ctx.ID(i).getText(), isStatic, arraySize));
+				ctx.ID(i).getText(), isStatic, arraySize, scope_));
 		} // for
 	} // enterVarDecl
 

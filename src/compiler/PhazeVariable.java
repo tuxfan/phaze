@@ -73,17 +73,19 @@ public class PhazeVariable implements Comparable<PhazeVariable> {
 	public String id;
 	public boolean isStatic;
 	public int arraySize;
+	public String scope;
 
 	PhazeVariable(PhazeType type_, String id_) {
-		this(type_, id_, false, 0);
+		this(type_, id_, false, 0, "default");
 	}
 
 	PhazeVariable(PhazeType type_, String id_, boolean isStatic_,
-		int arraySize_) {
+		int arraySize_, String scope_) {
 		type = type_;
 		id = id_;
 		isStatic = isStatic_;
 		arraySize = arraySize_;
+		scope = scope_;
 	} // PhazeVariable
 
 	public int compareTo(PhazeVariable pv) {
@@ -98,5 +100,10 @@ public class PhazeVariable implements Comparable<PhazeVariable> {
 	public String toString() {
 		return (isStatic ? "static " : "") + type.toString() + " " + id;
 	} // toString
+
+	public String staticString() {
+		return "const " + type.toString() + " " +
+			"phz_" + scope + "_constant_" + id + ";\n";
+	} // staticString
 
 } // class PhazeVariable

@@ -13,14 +13,38 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 	private PhazeBoilerPlate bp_;
 	private PrintWriter file_;
 
+	public PhazeBasicAoSWriter() {
+		bp_ = new PhazeBoilerPlate();
+	} // PhazeBasicAoSWriter
+
 	public void writeHeader(Hashtable<String, PhazeStruct> structs,
 		String baseName, CommandLine line) throws Exception {
 
 		/*----------------------------------------------------------------------*
-		 *
+		 * Keep track of static variables. These will become globals
+		 * in the library output.
 		 *----------------------------------------------------------------------*/
 
-		bp_ = new PhazeBoilerPlate();
+		Set<PhazeVariable> statics = new TreeSet<PhazeVariable>();
+
+		Enumeration e = structs.keys();
+		while(e.hasMoreElements()) {
+			Set<PhazeVariable> vars = structs.get(e.nextElement()).variables();
+
+			Iterator<PhazeVariable> ita = vars.iterator();
+			while(ita.hasNext()) {
+				PhazeVariable var = ita.next();
+
+				if(var.isStatic) {
+					statics.add(var);
+				} // if
+			} // while
+		} // while
+
+		/*----------------------------------------------------------------------*
+		 * Create file and write generic comment
+		 *----------------------------------------------------------------------*/
+
 		file_ = new PrintWriter(baseName + ".h");
 
 		file_.print(String.format(bp_.genericHeader,
@@ -28,6 +52,19 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 
 		file_.print("\n#ifndef phaze_h\n");
 		file_.print("#define phaze_h\n\n");
+
+		/*----------------------------------------------------------------------*
+		 *
+		 *----------------------------------------------------------------------*/
+
+/*
+		Iterator<PhazeVariable> ita = statics.iterator();
+		while(ita.hasNext()) {
+			PhazeVariable var = ita.next();
+
+			file_.println(var.staticString());
+		} // while
+*/
 
 		/*----------------------------------------------------------------------*
 		 *
@@ -43,6 +80,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 
 // FIXME: NEED TO HANDLE STORAGE CLASSES
 
+		// check dimension
 		int dim = line.hasOption("d") ?
 			Integer.parseInt(line.getOptionValue("d")) : 3;
 
@@ -50,7 +88,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		 * Iterate variables
 		 *----------------------------------------------------------------------*/
 
-		Iterator<PhazeVariable> ita = vars.iterator();
+		ita = vars.iterator();
 		while(ita.hasNext()) {
 			PhazeVariable var = ita.next();
 
@@ -60,12 +98,13 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 					file_.println("\tdouble " + var.id + "[" + dim + "];");
 					break;
 				default:
+// FIXME: make sure toString gives valid output
 					file_.println("\t" + var.toString());
 					break;
 			} // switch
 		} // while
 
-		file_.println("} // struct cell_t\n");
+		file_.println("}; // struct cell_t\n");
 
 		/*----------------------------------------------------------------------*
 		 *
@@ -96,7 +135,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 			} // switch
 		} // while
 
-		file_.println("} // struct material_t\n");
+		file_.println("}; // struct material_t\n");
 
 //
 //
