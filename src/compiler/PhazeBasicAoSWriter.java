@@ -17,8 +17,8 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		bp_ = new PhazeBoilerPlate();
 	} // PhazeBasicAoSWriter
 
-	public void writeHeader(Hashtable<String, PhazeStruct> structs,
-		String baseName, CommandLine line) throws Exception {
+	public void writeHeader(String inputFile, CommandLine line,
+		Hashtable<String, PhazeStruct> structs) throws Exception {
 
 		/*----------------------------------------------------------------------*
 		 * Keep track of static variables. These will become globals
@@ -45,10 +45,14 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		 * Create file and write generic comment
 		 *----------------------------------------------------------------------*/
 
-		file_ = new PrintWriter(baseName + ".h");
+		String path = line.hasOption("d") ?
+			line.getOptionValue("d") :
+			inputFile.substring(0, inputFile.lastIndexOf('/'));
+
+		file_ = new PrintWriter(path + "/phaze.h");
 
 		file_.print(String.format(bp_.genericHeader,
-			"Phaze interface for " + baseName + " input file"));
+			"Phaze interface for " + inputFile + " input file"));
 
 		file_.print("\n#ifndef phaze_h\n");
 		file_.print("#define phaze_h\n\n");
@@ -81,14 +85,14 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 // FIXME: NEED TO HANDLE STORAGE CLASSES
 
 		// check dimension
-		int dim = line.hasOption("d") ?
-			Integer.parseInt(line.getOptionValue("d")) : 3;
+		int dim = line.hasOption("D") ?
+			Integer.parseInt(line.getOptionValue("D")) : 3;
 
 		/*----------------------------------------------------------------------*
 		 * Iterate variables
 		 *----------------------------------------------------------------------*/
 
-		ita = vars.iterator();
+		Iterator<PhazeVariable> ita = vars.iterator();
 		while(ita.hasNext()) {
 			PhazeVariable var = ita.next();
 

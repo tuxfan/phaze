@@ -14,7 +14,7 @@ public class PhazeHandler extends phazeBaseListener {
 	 * Private data members
 	 *-------------------------------------------------------------------------*/
 
-	String baseName_;
+	String inputFile_;
 
 	boolean cellDefined_;
 	boolean matDefined_;
@@ -31,9 +31,9 @@ public class PhazeHandler extends phazeBaseListener {
 	 * Constructor
 	 *-------------------------------------------------------------------------*/
 
-	public PhazeHandler(String baseName, CommandLine line) throws Exception {
+	public PhazeHandler(String inputFile, CommandLine line) throws Exception {
 		// save input parameters
-		baseName_ = baseName;
+		inputFile_ = inputFile;
 		line_ = line;
 
 		// member initialization
@@ -61,7 +61,7 @@ public class PhazeHandler extends phazeBaseListener {
 		PhazeWriter writer = new PhazeBasicAoSWriter();
 
 		try {
-			writer.writeHeader(structs_, baseName_, line_);
+			writer.writeHeader(inputFile_, line_, structs_);
 		}
 		catch(Exception e) {
 			System.err.print("error: write header failed\n");

@@ -9,7 +9,7 @@ import java.util.*;
 
 public interface PhazeWriter {
 
-	public void writeHeader(Hashtable<String, PhazeStruct> structs,
-		String baseName, CommandLine line) throws Exception;
+	public void writeHeader(String inputFile, CommandLine line,
+		Hashtable<String, PhazeStruct> structs) throws Exception;
 	
 } // interface PhazeWriter

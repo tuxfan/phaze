@@ -20,20 +20,31 @@ public class Main {
 
 		Options opts = new Options();
 
+		// help
 		opts.addOption("h", "help", false,
 			"print this message and exit.");
 
+		// output directory
+		opts.addOption(OptionBuilder.withArgName("input directory")
+			.withLongOpt("directory")
+			.hasArg()
+			.withDescription("specify the output directory")
+			.create("d"));
+
+		// dimension
 		opts.addOption(OptionBuilder.withArgName("3")
 			.withLongOpt("dimension")
 			.hasArg()
 			.withDescription("specify the dimension [1,2,3]")
-			.create("d"));
+			.create("D"));
 
+		// data layout
 		opts.addOption(OptionBuilder.withArgName("AoS")
 			.withLongOpt("layout")
 			.hasArg()
 			.withDescription("specify the data layout [AoS,SoA]")
 			.create("l"));
+
 
 		// check command-line arguments
 		if(args.length < 1) {
@@ -63,9 +74,6 @@ public class Main {
 		// create an input stream for antlr
 		InputStream is = new FileInputStream(inputFile);
 
-		// set the basename to use for output
-		String baseName = inputFile.substring(0, inputFile.lastIndexOf('.'));
-
 		// create a CharStream that reads from standard input
 		ANTLRInputStream input = new ANTLRInputStream(is);
 
@@ -85,7 +93,7 @@ public class Main {
 		ParseTreeWalker walker = new ParseTreeWalker();
 
 		// create phaze handler
-		PhazeHandler phzHandler = new PhazeHandler(baseName, line);
+		PhazeHandler phzHandler = new PhazeHandler(inputFile, line);
 
 		// process the input
 		walker.walk(phzHandler, tree);
