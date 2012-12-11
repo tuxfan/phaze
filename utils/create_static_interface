@@ -39,12 +39,12 @@ for line in template.readlines():
 
 	if len('\"' + line + '\\n\"\n') > 60:
 		output.write('\t\t"' + stripped[0:41] + '" + \n')
-		output.write('\t\t"' + stripped[41:len(line)] + '" + \n')
+		output.write('\t\t"' + stripped[41:len(line)] + '\\n" + \n')
 	else:
 		output.write('\t\t"' + stripped + '\\n" +\n')
 # for
 
-output.write('\t\t"\\n/* end static interface */";\n\n')
+output.write('\t\t"\\n/* end static interface */\\n";\n\n')
 
 output.write('} // class ' + args.name + '\n')
 

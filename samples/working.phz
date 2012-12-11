@@ -21,7 +21,7 @@ cell {
 
 material {
 	double r;
-	vec32_t ru;
+	vec64_t ru;
 	double rE;
 	double vf;
 	double a[2];

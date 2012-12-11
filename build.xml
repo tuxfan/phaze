@@ -11,6 +11,7 @@
 	<!-- set global properties for this build -->
 	<property name="src" location="${basedir}/src"/>
 	<property name="build" location="${basedir}/build"/>
+	<property name="dist" location="${basedir}/dist"/>
 	<property name="utils" location="${basedir}/utils"/>
 	<property name="samples" location="${basedir}/samples"/>
 
@@ -116,6 +117,7 @@
 	 ! Distribution
 	 !======================================================================= -->
 	<target name="dist" depends="phaze">
+		<mkdir dir="${dist}"/>
 		<mkdir dir="${build}/dist/${version}"/>
 		<mkdir dir="${build}/dist/${version}/bin"/>
 		<mkdir dir="${build}/dist/${version}/jar"/>
@@ -140,7 +142,7 @@
 			</tarfileset>
 		</tar>
 
-		<gzip src="${build}/${version}.tar" destfile="${build}/${version}.tgz"/>
+		<gzip src="${build}/${version}.tar" destfile="${dist}/${version}.tgz"/>
 
 		<delete dir="${build}/dist"/>
 		<delete file="${build}/${version}.tar"/>
