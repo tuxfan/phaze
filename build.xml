@@ -158,9 +158,9 @@
 		<mkdir dir="${build}/phaze"/>
 
 		<exec executable="${utils}/create_static_interface">
-		<arg value="PhazeInterface"/>
+		<arg value="PhazeInterfaceC"/>
 		<arg value="${src}/interface/static_interface_c.h"/>
-		<arg value="${build}/phaze/PhazeInterface.java"/>
+		<arg value="${build}/phaze/PhazeInterfaceC.java"/>
 		</exec>
 	</target>
 

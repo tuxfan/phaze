@@ -14,7 +14,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 	private PrintWriter file_;
 
 	public PhazeBasicAoSWriter() {
-		bp_ = new PhazeBoilerPlate();
+		bp_ = new PhazeBoilerPlateC();
 	} // PhazeBasicAoSWriter
 
 	public void writeHeader(String inputFile, CommandLine line,
@@ -55,7 +55,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 
 		file_ = new PrintWriter(path + "/phaze.h");
 
-		file_.print(String.format(bp_.genericHeader,
+		file_.print(String.format(bp_.genericHeader(),
 			"Phaze interface for " + inputFile + " input file"));
 
 		file_.print("\n#ifndef phaze_h\n");
@@ -80,9 +80,9 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 
 		Set<PhazeVariable> vars = structs.get("cell").variables();
 
-		file_.print(bp_.commentLineStart);
+		file_.print(bp_.startComment());
 		file_.println(" * cell_t structure prototype");
-		file_.println(bp_.commentLineEnd);
+		file_.println(bp_.endComment());
 
 		file_.println("struct cell_t {");
 
@@ -124,9 +124,9 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 
 		vars = structs.get("material").variables();
 
-		file_.print(bp_.commentLineStart);
+		file_.print(bp_.startComment());
 		file_.println(" * material_t structure prototype");
-		file_.println(bp_.commentLineEnd);
+		file_.println(bp_.endComment());
 
 		file_.println("struct material_t {");
 
@@ -158,7 +158,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 //
 
 		// static interface
-		file_.print(bp_.staticInterface);
+		file_.print(bp_.staticInterface());
 
 		// header file finalization
 		file_.print("\n#endif // phaze_h\n");
