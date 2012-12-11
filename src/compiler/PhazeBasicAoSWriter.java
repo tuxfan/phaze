@@ -101,8 +101,12 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 			PhazeVariable var = ita.next();
 
 			switch(var.type) {
-				case position:
-				case vector:
+				case pos32:
+				case vec32:
+					file_.println("\tfloat " + var.id + "[" + dim + "];");
+					break;
+				case pos64:
+				case vec64:
 					file_.println("\tdouble " + var.id + "[" + dim + "];");
 					break;
 				default:
@@ -133,8 +137,12 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 			PhazeVariable var = ita.next();
 
 			switch(var.type) {
-				case position:
-				case vector:
+				case pos32:
+				case vec32:
+					file_.println("\tfloat " + var.id + "[" + dim + "];");
+					break;
+				case pos64:
+				case vec64:
 					file_.println("\tdouble " + var.id + "[" + dim + "];");
 					break;
 				default:

@@ -11,6 +11,7 @@
 	<!-- set global properties for this build -->
 	<property name="src" location="${basedir}/src"/>
 	<property name="build" location="${basedir}/build"/>
+	<property name="utils" location="${basedir}/utils"/>
 	<property name="samples" location="${basedir}/samples"/>
 
 	<property name="version" value="phaze-0.1-beta"/>
@@ -30,6 +31,7 @@
 			includeantruntime="false">
 
 			<src path="${src}/compiler"/>
+			<src path="${build}/phaze"/>
 
 			<classpath>
 				<pathelement path="${java.class.path} ${build}/classes"/>
@@ -153,6 +155,13 @@
 
 		<!-- Create the build directory -->
 		<mkdir dir="${build}"/>
+		<mkdir dir="${build}/phaze"/>
+
+		<exec executable="${utils}/create_static_interface">
+		<arg value="PhazeInterface"/>
+		<arg value="${src}/interface/static_interface_c.h"/>
+		<arg value="${build}/phaze/PhazeInterface.java"/>
+		</exec>
 	</target>
 
 	<!-- ======================================================================!

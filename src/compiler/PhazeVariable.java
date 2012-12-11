@@ -15,8 +15,10 @@ enum PhazeType {
 	int64 { public String toString() { return "int64_t"; }},
 	real32 { public String toString() { return "float"; }},
 	real64 { public String toString() { return "double"; }},
-	position { public String toString() { return "position"; }},
-	vector { public String toString() { return "vector"; }},
+	pos32 { public String toString() { return "pos32_t"; }},
+	pos64 { public String toString() { return "pos64_t"; }},
+	vec32 { public String toString() { return "vec32_t"; }},
+	vec64 { public String toString() { return "vec64_t"; }},
 	unknown;
 
 	private static final Map<String, String> strmap_ =
@@ -28,8 +30,10 @@ enum PhazeType {
 		strmap_.put("int64_t", "int64");
 		strmap_.put("float", "real32");
 		strmap_.put("double", "real64");
-		strmap_.put("position", "position");
-		strmap_.put("vector", "vector");
+		strmap_.put("pos32_t", "pos32");
+		strmap_.put("pos64_t", "pos64");
+		strmap_.put("vec32_t", "vec32");
+		strmap_.put("vec64_t", "vec64");
 	} // scope
 
 	private static final int size_ = EnumSet.allOf(PhazeType.class).size();
