@@ -11,6 +11,7 @@
 	<!-- set global properties for this build -->
 	<property name="src" location="${basedir}/src"/>
 	<property name="build" location="${basedir}/build"/>
+	<property name="version" value="phaze-0.1-beta"/>
 
 	<!-- ======================================================================!
 	 ! Build phaze
@@ -105,6 +106,35 @@
 		<chmod file="${install}/phaze/bin/phaze" perm="+x"/>
 
 		<copy file="build/jar/phaze.jar" todir="${install}/phaze/jar"/>
+	</target>
+
+	<!-- ======================================================================!
+	 ! Distribution
+	 !======================================================================= -->
+	<target name="dist" depends="phaze">
+		<mkdir dir="${build}/dist/${version}"/>
+		<mkdir dir="${build}/dist/${version}/bin"/>
+		<mkdir dir="${build}/dist/${version}/jar"/>
+
+		<copy file="src/script/phaze.in"
+			tofile="${build}/dist/${version}/bin/phaze.in"/>
+		<copy file="src/script/install" todir="${build}/dist/${version}"/>
+		<copy file="build/jar/phaze.jar" todir="${build}/dist/${version}/jar"/>
+
+		<tar destfile="${build}/${version}.tar">
+			<tarfileset dir="${build}/dist" filemode="755">
+				<include name="${version}/install"/>
+			</tarfileset>
+			<tarfileset dir="${build}/dist">
+				<include name="${version}/**"/>
+				<exclude name="${version}/install"/>
+			</tarfileset>
+		</tar>
+
+		<gzip src="${build}/${version}.tar" destfile="${build}/${version}.tgz"/>
+
+		<delete dir="${build}/dist"/>
+		<delete file="${build}/${version}.tar"/>
 	</target>
 
 	<!-- ======================================================================!

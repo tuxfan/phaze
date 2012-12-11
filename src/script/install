@@ -1,0 +1,34 @@
+#! /usr/bin/env bash
+#------------------------------------------------------------------------------#
+# Install the phaze compiler
+#------------------------------------------------------------------------------#
+
+# request install directory
+echo "Installation directory [/opt/phaze]:"
+
+# read input
+read -e path
+
+if [ -z "$path" ] ; then
+	path=/opt/phaze
+fi
+
+echo "Installing to $path"
+
+bindir=$path/bin
+jardir=$path/jar
+
+# create directories
+mkdir -p $bindir
+mkdir -p $jardir
+
+# create phaze script
+cat bin/phaze.in | sed "s,@PATH@,$jardir,g" > $bindir/phaze
+chmod 755 $bindir/phaze
+
+# copy jar file
+cp jar/phaze.jar $jardir
+
+# finished
+echo "Installation Complete!"
+echo "Please add $bindir to your PATH"

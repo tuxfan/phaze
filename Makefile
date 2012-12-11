@@ -14,5 +14,8 @@ grammar: build.xml
 install: build.xml
 	@(${ANT} ${LOGGER} install)
 
+dist: build.xml
+	@(${ANT} ${LOGGER} dist)
+
 clean: build.xml
 	@(${ANT} ${LOGGER} clean)
