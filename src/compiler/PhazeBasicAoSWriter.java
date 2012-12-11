@@ -55,8 +55,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 
 		file_ = new PrintWriter(path + "/phaze.h");
 
-		file_.print(String.format(bp_.genericHeader(),
-			"Phaze interface for " + inputFile + " input file"));
+		file_.print(String.format(bp_.genericHeader(inputFile)));
 
 		file_.print("\n#ifndef phaze_h\n");
 		file_.print("#define phaze_h\n\n");

@@ -9,7 +9,7 @@
  *----------------------------------------------------------------------------*/
 
 cell {
-	// position is a dimension-dependant type
+	// pos32_t is a dimension-dependant type
 	pos32_t p;
 }
 
@@ -21,9 +21,15 @@ cell {
 
 material {
 	double r;
+
+	// vec32_t is a dimension-dependant type
 	vec64_t ru;
+
 	double rE;
 	double vf;
+
+	// generic arrays are supported and are guarunteed to be
+	// contiguously allocated
 	double a[2];
 }
 
