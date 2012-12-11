@@ -19,3 +19,6 @@ dist: build.xml
 
 clean: build.xml
 	@(${ANT} ${LOGGER} clean)
+
+distclean: build.xml
+	@(${ANT} ${LOGGER} distclean)
