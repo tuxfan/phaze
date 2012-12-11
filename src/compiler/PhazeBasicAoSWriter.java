@@ -45,9 +45,13 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		 * Create file and write generic comment
 		 *----------------------------------------------------------------------*/
 
+// FIXME: Move up in the call chain
+		int slash = inputFile.lastIndexOf('/');
+		String inputDir = slash == -1 ? "./" : inputFile.substring(0, slash);
+
 		String path = line.hasOption("d") ?
-			line.getOptionValue("d") :
-			inputFile.substring(0, inputFile.lastIndexOf('/'));
+			line.getOptionValue("d") : inputDir;
+// FIXME
 
 		file_ = new PrintWriter(path + "/phaze.h");
 

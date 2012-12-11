@@ -11,6 +11,8 @@
 	<!-- set global properties for this build -->
 	<property name="src" location="${basedir}/src"/>
 	<property name="build" location="${basedir}/build"/>
+	<property name="samples" location="${basedir}/samples"/>
+
 	<property name="version" value="phaze-0.1-beta"/>
 
 	<!-- ======================================================================!
@@ -115,11 +117,16 @@
 		<mkdir dir="${build}/dist/${version}"/>
 		<mkdir dir="${build}/dist/${version}/bin"/>
 		<mkdir dir="${build}/dist/${version}/jar"/>
+		<mkdir dir="${build}/dist/${version}/samples"/>
 
-		<copy file="src/script/phaze.in"
+		<copy file="${src}/script/phaze.in"
 			tofile="${build}/dist/${version}/bin/phaze.in"/>
-		<copy file="src/script/install" todir="${build}/dist/${version}"/>
-		<copy file="build/jar/phaze.jar" todir="${build}/dist/${version}/jar"/>
+		<copy file="${src}/script/install" todir="${build}/dist/${version}"/>
+		<copy file="${build}/jar/phaze.jar"
+			todir="${build}/dist/${version}/jar"/>
+		<copy todir="${build}/dist/${version}/samples">
+			<fileset dir="${samples}"/>
+		</copy>
 
 		<tar destfile="${build}/${version}.tar">
 			<tarfileset dir="${build}/dist" filemode="755">

@@ -1,0 +1,34 @@
+/*----------------------------------------------------------------------------*
+ * Example phaze configuration
+ *----------------------------------------------------------------------------*/
+
+cell {
+	position p;
+}
+
+material {
+	double r;
+	vector ru;
+	double rE;
+	double vf;
+	double a[2];
+}
+
+isotope {
+	static int mid;
+	double number_density;
+}
+
+composition {
+	int dummy;
+}
+
+reaction {
+	int id; // shit
+}
+
+/*
+	isotope Pu : mid(4);
+	isotope DT : mid(5);
+*/
+
