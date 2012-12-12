@@ -100,12 +100,9 @@ public class PhazeVariable implements Comparable<PhazeVariable> {
 	public PhazeType type;
 	public String id;
 	public boolean isStatic;
+	public int dimension;
 	public int arraySize;
 	public String scope;
-
-	PhazeVariable(PhazeType type_, String id_) {
-		this(type_, id_, false, 0, "default");
-	}
 
 	PhazeVariable(PhazeType type_, String id_, boolean isStatic_,
 		int arraySize_, String scope_) {
@@ -125,13 +122,14 @@ public class PhazeVariable implements Comparable<PhazeVariable> {
 		} // if
 	} // compareTo
 
+	/*-------------------------------------------------------------------------*
+	 * This method is designed to conform to the standard java toString()
+	 * functionality provided by most classes.  For actual source output,
+	 * use the PhazeXUtils where 'X' is the language you are writing.
+	 *-------------------------------------------------------------------------*/
+
 	public String toString() {
 		return (isStatic ? "static " : "") + type.toString() + " " + id;
 	} // toString
-
-	public String staticString() {
-		return "const " + type.toString() + " " +
-			"phz_" + scope + "_constant_" + id + ";\n";
-	} // staticString
 
 } // class PhazeVariable

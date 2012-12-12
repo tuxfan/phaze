@@ -80,28 +80,42 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 			Integer.parseInt(line.getOptionValue("D")) : 3;
 
 		/*----------------------------------------------------------------------*
-		 *
+		 * Output cell_t
 		 *----------------------------------------------------------------------*/
 
 		file_.print(bp_.startComment());
 		file_.println(" * cell_t structure prototype");
 		file_.println(bp_.endComment());
-
 		file_.println("struct cell_t {");
-		printVariables(structs.get("cell").variables(), dim);
+		PhazeCUtils.printAsLocals(file_,
+			structs.get("cell").variables(), dim);
 		file_.println("}; // struct cell_t\n");
 
 		/*----------------------------------------------------------------------*
-		 *
+		 * Output material_t
 		 *----------------------------------------------------------------------*/
 
 		file_.print(bp_.startComment());
 		file_.println(" * material_t structure prototype");
 		file_.println(bp_.endComment());
-
 		file_.println("struct material_t {");
-		printVariables(structs.get("material").variables(), dim);
+		file_.println("\tchar _phz_private[32];");
+		PhazeCUtils.printAsLocals(file_,
+			structs.get("material").variables(), dim);
 		file_.println("}; // struct material_t\n");
+
+		/*----------------------------------------------------------------------*
+		 * Output composition_t
+		 *----------------------------------------------------------------------*/
+
+		file_.print(bp_.startComment());
+		file_.println(" * composition_t structure prototype");
+		file_.println(bp_.endComment());
+		file_.println("struct composition_t {");
+		file_.println("\tchar _phz_private[32];");
+		PhazeCUtils.printAsLocals(file_,
+			structs.get("composition").variables(), dim);
+		file_.println("}; // struct composition_t\n");
 
 //
 //
@@ -116,25 +130,4 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		file_.close();
 	} // writeHeader
 
-	void printVariables(Set<PhazeVariable> vars, int dim) {
-		Iterator<PhazeVariable> ita = vars.iterator();
-		while(ita.hasNext()) {
-			PhazeVariable var = ita.next();
-
-			switch(var.type) {
-				case pos32:
-				case vec32:
-					file_.println("\tfloat " + var.id + "[" + dim + "];");
-					break;
-				case pos64:
-				case vec64:
-					file_.println("\tdouble " + var.id + "[" + dim + "];");
-					break;
-				default:
-					file_.println("\t" + var.type.toString() +
-						" " + var.id + ";");
-					break;
-			} // switch
-		} // while
-	} // printVariables
 } // class PhazeBasicAoSWriter
