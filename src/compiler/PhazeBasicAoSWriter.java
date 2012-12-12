@@ -25,6 +25,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		 * in the library output.
 		 *----------------------------------------------------------------------*/
 
+/*
 		Set<PhazeVariable> statics = new TreeSet<PhazeVariable>();
 
 		Enumeration e = structs.keys();
@@ -40,6 +41,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 				} // if
 			} // while
 		} // while
+*/
 
 		/*----------------------------------------------------------------------*
 		 * Create file and write generic comment
@@ -73,83 +75,32 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		} // while
 */
 
+		// check dimension
+		int dim = line.hasOption("D") ?
+			Integer.parseInt(line.getOptionValue("D")) : 3;
+
 		/*----------------------------------------------------------------------*
 		 *
 		 *----------------------------------------------------------------------*/
-
-		Set<PhazeVariable> vars = structs.get("cell").variables();
 
 		file_.print(bp_.startComment());
 		file_.println(" * cell_t structure prototype");
 		file_.println(bp_.endComment());
 
 		file_.println("struct cell_t {");
-
-// FIXME: NEED TO HANDLE STORAGE CLASSES
-
-		// check dimension
-		int dim = line.hasOption("D") ?
-			Integer.parseInt(line.getOptionValue("D")) : 3;
-
-		/*----------------------------------------------------------------------*
-		 * Iterate variables
-		 *----------------------------------------------------------------------*/
-
-		Iterator<PhazeVariable> ita = vars.iterator();
-		while(ita.hasNext()) {
-			PhazeVariable var = ita.next();
-
-			switch(var.type) {
-				case pos32:
-				case vec32:
-					file_.println("\tfloat " + var.id + "[" + dim + "];");
-					break;
-				case pos64:
-				case vec64:
-					file_.println("\tdouble " + var.id + "[" + dim + "];");
-					break;
-				default:
-// FIXME: make sure toString gives valid output
-					file_.println("\t" + var.toString());
-					break;
-			} // switch
-		} // while
-
+		printVariables(structs.get("cell").variables(), dim);
 		file_.println("}; // struct cell_t\n");
 
 		/*----------------------------------------------------------------------*
 		 *
 		 *----------------------------------------------------------------------*/
 
-		vars = structs.get("material").variables();
-
 		file_.print(bp_.startComment());
 		file_.println(" * material_t structure prototype");
 		file_.println(bp_.endComment());
 
 		file_.println("struct material_t {");
-
-// FIXME: NEED TO HANDLE STORAGE CLASSES
-
-		ita = vars.iterator();
-		while(ita.hasNext()) {
-			PhazeVariable var = ita.next();
-
-			switch(var.type) {
-				case pos32:
-				case vec32:
-					file_.println("\tfloat " + var.id + "[" + dim + "];");
-					break;
-				case pos64:
-				case vec64:
-					file_.println("\tdouble " + var.id + "[" + dim + "];");
-					break;
-				default:
-					file_.println("\t" + var.toString());
-					break;
-			} // switch
-		} // while
-
+		printVariables(structs.get("material").variables(), dim);
 		file_.println("}; // struct material_t\n");
 
 //
@@ -165,4 +116,25 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		file_.close();
 	} // writeHeader
 
+	void printVariables(Set<PhazeVariable> vars, int dim) {
+		Iterator<PhazeVariable> ita = vars.iterator();
+		while(ita.hasNext()) {
+			PhazeVariable var = ita.next();
+
+			switch(var.type) {
+				case pos32:
+				case vec32:
+					file_.println("\tfloat " + var.id + "[" + dim + "];");
+					break;
+				case pos64:
+				case vec64:
+					file_.println("\tdouble " + var.id + "[" + dim + "];");
+					break;
+				default:
+					file_.println("\t" + var.type.toString() +
+						" " + var.id + ";");
+					break;
+			} // switch
+		} // while
+	} // printVariables
 } // class PhazeBasicAoSWriter

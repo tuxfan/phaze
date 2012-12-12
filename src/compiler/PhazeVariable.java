@@ -11,14 +11,38 @@ import java.util.*;
  *----------------------------------------------------------------------------*/
 
 enum PhazeType {
-	int32 { public String toString() { return "int32_t"; }},
-	int64 { public String toString() { return "int64_t"; }},
-	real32 { public String toString() { return "float"; }},
-	real64 { public String toString() { return "double"; }},
-	pos32 { public String toString() { return "pos32_t"; }},
-	pos64 { public String toString() { return "pos64_t"; }},
-	vec32 { public String toString() { return "vec32_t"; }},
-	vec64 { public String toString() { return "vec64_t"; }},
+	// 32-bit integer type
+	int32 {
+		public String toString() { return "int32_t"; }
+	},
+	// 64-bit integer type
+	int64 {
+		public String toString() { return "int64_t"; }
+	},
+	// 32-bit floating point type
+	real32 {
+		public String toString() { return "float"; }
+	},
+	// 64-bit floating point type
+	real64 {
+		public String toString() { return "double"; }
+	},
+	// 32-bit position type
+	pos32 {
+		public String toString() { return "pos32_t"; }
+	},
+	// 64-bit position type
+	pos64 {
+		public String toString() { return "pos64_t"; }
+	},
+	// 32-bit vector type
+	vec32 {
+		public String toString() { return "vec32_t"; }
+	},
+	// 64-bit vector type
+	vec64 {
+		public String toString() { return "vec64_t"; }
+	},
 	unknown;
 
 	private static final Map<String, String> strmap_ =
