@@ -89,6 +89,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		file_.println("struct cell_t {");
 		PhazeCUtils.printAsLocals(file_,
 			structs.get("cell").variables(), dim);
+		file_.println("\tchar _phz_private[32];");
 		file_.println("}; // struct cell_t\n");
 
 		/*----------------------------------------------------------------------*
@@ -99,9 +100,9 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		file_.println(" * material_t structure prototype");
 		file_.println(bp_.endComment());
 		file_.println("struct material_t {");
-		file_.println("\tchar _phz_private[32];");
 		PhazeCUtils.printAsLocals(file_,
 			structs.get("material").variables(), dim);
+		file_.println("\tchar _phz_private[32];");
 		file_.println("}; // struct material_t\n");
 
 		/*----------------------------------------------------------------------*
@@ -112,9 +113,9 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		file_.println(" * composition_t structure prototype");
 		file_.println(bp_.endComment());
 		file_.println("struct composition_t {");
-		file_.println("\tchar _phz_private[32];");
 		PhazeCUtils.printAsLocals(file_,
 			structs.get("composition").variables(), dim);
+		file_.println("\tchar _phz_private[32];");
 		file_.println("}; // struct composition_t\n");
 
 //

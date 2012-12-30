@@ -10,16 +10,33 @@ import java.util.*;
 public class PhazeCUtils {
 
 	public static String toLocal(PhazeVariable var, int dimension) {
-		switch(var.type) {
-			case pos32:
-			case vec32:
-				return "\tfloat" + var.id + "[" + dimension + "];";
-			case pos64:
-			case vec64:
-				return "\tdouble " + var.id + "[" + dimension + "];";
-			default:
-				return "\t" + var.type.toString() + " " + var.id + ";";
-		} // switch
+		if(var.arraySize > 0) {
+			switch(var.type) {
+				case pos32:
+				case vec32:
+					return "\tfloat " + var.id + "[" +
+						var.arraySize*dimension + "];";
+				case pos64:
+				case vec64:
+					return "\tdouble " + var.id + "[" +
+						var.arraySize*dimension + "];";
+				default:
+					return "\t" + var.type.toString() + " " + var.id +
+						"[" + var.arraySize + "];";
+			} // switch
+		}
+		else {
+			switch(var.type) {
+				case pos32:
+				case vec32:
+					return "\tfloat " + var.id + "[" + dimension + "];";
+				case pos64:
+				case vec64:
+					return "\tdouble " + var.id + "[" + dimension + "];";
+				default:
+					return "\t" + var.type.toString() + " " + var.id + ";";
+			} // switch
+		} // if
 	} // toLocal
 
 	public static String toPointer(PhazeVariable var) {
