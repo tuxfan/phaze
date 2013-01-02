@@ -11,7 +11,8 @@ import java.util.*;
 public class PhazeBasicAoSWriter implements PhazeWriter {
 
 	private PhazeBoilerPlate bp_;
-	private PrintWriter file_;
+	private PrintWriter types_;
+	private PrintWriter header_;
 
 	public PhazeBasicAoSWriter() {
 		bp_ = new PhazeBoilerPlateC();
@@ -55,12 +56,34 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 			line.getOptionValue("d") : inputDir;
 // FIXME
 
-		file_ = new PrintWriter(path + "/phaze.h");
+		/*----------------------------------------------------------------------*
+		 * header setup
+		 *----------------------------------------------------------------------*/
 
-		file_.print(String.format(bp_.genericHeader(inputFile)));
+		header_ = new PrintWriter(path + "/phaze.h");
 
-		file_.print("\n#ifndef phaze_h\n");
-		file_.print("#define phaze_h\n\n");
+		header_.print(String.format(bp_.genericHeader(inputFile)));
+
+		header_.print("\n#ifndef phaze_h\n");
+		header_.print("#define phaze_h\n\n");
+
+		header_.print("#define _include_phaze_h\n");
+		header_.print("#include <phztypes.h>\n\n");
+
+		/*----------------------------------------------------------------------*
+		 * types setup
+		 *----------------------------------------------------------------------*/
+
+		types_ = new PrintWriter(path + "/phztypes.h");
+
+		types_.print(String.format(bp_.genericHeader(inputFile)));
+
+		types_.print("\n#ifndef phztypes_h\n");
+		types_.print("#define phztypes_h\n\n");
+		types_.print("#if !defined(_include_phaze_h)\n");
+		types_.print("#error \"Error: do not include this file directly");
+		types_.print(", use #include <phaze.h>\"\n");
+		types_.print("#endif\n\n");
 
 		/*----------------------------------------------------------------------*
 		 *
@@ -71,7 +94,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		while(ita.hasNext()) {
 			PhazeVariable var = ita.next();
 
-			file_.println(var.staticString());
+			header_.println(var.staticString());
 		} // while
 */
 
@@ -83,52 +106,67 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		 * Output cell_t
 		 *----------------------------------------------------------------------*/
 
-		file_.print(bp_.startComment());
-		file_.println(" * cell_t structure prototype");
-		file_.println(bp_.endComment());
-		file_.println("struct cell_t {");
-		PhazeCUtils.printAsLocals(file_,
+		types_.print(bp_.startComment());
+		types_.println(" * cell_t structure prototype");
+		types_.println(bp_.endComment());
+		types_.println("struct cell_t {");
+		PhazeCUtils.printAsLocals(types_,
 			structs.get("cell").variables(), dim);
-		file_.println("\tchar _phz_private[32];");
-		file_.println("}; // struct cell_t\n");
+		types_.println("\tchar _phz_private[32];");
+		types_.println("}; // struct cell_t\n");
+
+		types_.println("typedef cell_t * phz_cell;\n");
 
 		/*----------------------------------------------------------------------*
 		 * Output material_t
 		 *----------------------------------------------------------------------*/
 
-		file_.print(bp_.startComment());
-		file_.println(" * material_t structure prototype");
-		file_.println(bp_.endComment());
-		file_.println("struct material_t {");
-		PhazeCUtils.printAsLocals(file_,
+		types_.print(bp_.startComment());
+		types_.println(" * material_t structure prototype");
+		types_.println(bp_.endComment());
+		types_.println("struct material_t {");
+		PhazeCUtils.printAsLocals(types_,
 			structs.get("material").variables(), dim);
-		file_.println("\tchar _phz_private[32];");
-		file_.println("}; // struct material_t\n");
+		types_.println("\tchar _phz_private[32];");
+		types_.println("}; // struct material_t\n");
+
+		types_.println("typedef material_t * phz_material;\n");
 
 		/*----------------------------------------------------------------------*
 		 * Output composition_t
 		 *----------------------------------------------------------------------*/
 
-		file_.print(bp_.startComment());
-		file_.println(" * composition_t structure prototype");
-		file_.println(bp_.endComment());
-		file_.println("struct composition_t {");
-		PhazeCUtils.printAsLocals(file_,
+		types_.print(bp_.startComment());
+		types_.println(" * composition_t structure prototype");
+		types_.println(bp_.endComment());
+		types_.println("struct composition_t {");
+		PhazeCUtils.printAsLocals(types_,
 			structs.get("composition").variables(), dim);
-		file_.println("\tchar _phz_private[32];");
-		file_.println("}; // struct composition_t\n");
+		types_.println("\tchar _phz_private[32];");
+		types_.println("}; // struct composition_t\n");
+
+		types_.println("typedef material_t * phz_composition;\n");
 
 //
 //
 //
 
 		// static interface
-		file_.print(bp_.staticInterface());
+		header_.print(bp_.staticInterface());
 
-		// header file finalization
-		file_.print("\n#endif // phaze_h\n");
+		/*----------------------------------------------------------------------*
+		 * Finalize header
+		 *----------------------------------------------------------------------*/
 
-		file_.close();
+		header_.print("\n#endif // phaze_h\n");
+		header_.close();
+
+		/*----------------------------------------------------------------------*
+		 * Finalize types
+		 *----------------------------------------------------------------------*/
+
+		types_.print("\n#endif // phztypes_h\n");
+		types_.close();
 	} // writeHeader
 
 } // class PhazeBasicAoSWriter
