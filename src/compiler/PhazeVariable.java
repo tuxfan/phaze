@@ -21,11 +21,11 @@ enum PhazeType {
 	},
 	// 32-bit floating point type
 	real32 {
-		public String toString() { return "float"; }
+		public String toString() { return "real32_t"; }
 	},
 	// 64-bit floating point type
 	real64 {
-		public String toString() { return "double"; }
+		public String toString() { return "real64_t"; }
 	},
 	// 32-bit position type
 	pos32 {
@@ -49,11 +49,10 @@ enum PhazeType {
 		new HashMap<String, String>();
 
 	static {
-		strmap_.put("int", "int32");
 		strmap_.put("int32_t", "int32");
 		strmap_.put("int64_t", "int64");
-		strmap_.put("float", "real32");
-		strmap_.put("double", "real64");
+		strmap_.put("real32_t", "real32");
+		strmap_.put("real64_t", "real64");
 		strmap_.put("pos32_t", "pos32");
 		strmap_.put("pos64_t", "pos64");
 		strmap_.put("vec32_t", "vec32");

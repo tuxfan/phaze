@@ -117,11 +117,10 @@ type
 	;
 
 primitive
-	: 'int'
-	| 'int32_t'
+	: 'int32_t'
 	| 'int64_t'
-	| 'float'
-	| 'double'
+	| 'real32_t'
+	| 'real64_t'
 	| 'pos32_t'
 	| 'pos64_t'
 	| 'vec32_t'

@@ -20,17 +20,17 @@ cell {
  *----------------------------------------------------------------------------*/
 
 material {
-	double r;
+	real64_t r;
 
 	// vec32_t is a dimension-dependant type
 	vec64_t ru;
 
-	double rE;
-	double vf;
+	real64_t rE;
+	real64_t vf;
 
 	// generic arrays are supported and are guarunteed to be
 	// contiguously allocated
-	double a[2];
+	real64_t a[2];
 }
 
 /*----------------------------------------------------------------------------*
@@ -49,7 +49,7 @@ composition {
  *----------------------------------------------------------------------------*/
 
 isotope {
-	double number_density;
+	real64_t number_density;
 }
 
 /*----------------------------------------------------------------------------*
