@@ -13,12 +13,13 @@ public class PhazeBasicWriter implements PhazeWriter {
 	private PhazeBoilerPlate bp_;
 	private PrintWriter types_;
 	private PrintWriter header_;
+	private PrintWriter source_;
 
 	public PhazeBasicWriter() {
 		bp_ = new PhazeBoilerPlateC();
 	} // PhazeBasicWriter
 
-	public void writeHeader(String inputFile, CommandLine line,
+	public void writeHeaders(String inputFile, CommandLine line,
 		Hashtable<String, PhazeStruct> structs) throws Exception {
 
 		/*----------------------------------------------------------------------*
@@ -179,7 +180,19 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.println("\tchar _phz_private[32];");
 		types_.println("}; // struct composition_t\n");
 
-		types_.println("typedef material_t * phz_composition;");
+		types_.println("typedef material_t * phz_composition;\n");
+
+		/*----------------------------------------------------------------------*
+		 * Output phaze_t
+		 *----------------------------------------------------------------------*/
+
+		types_.print(bp_.startComment());
+		types_.println(" * phaze_t structure prototype");
+		types_.println(bp_.endComment());
+		types_.println("struct phaze_t {");
+		types_.println("\tvoid * begin;");
+		types_.println("\tcell_t * cells;");
+		types_.println("} // struct phaze_t");
 
 //
 //
@@ -201,6 +214,42 @@ public class PhazeBasicWriter implements PhazeWriter {
 
 		types_.print("\n#endif // phztypes_h\n");
 		types_.close();
-	} // writeHeader
+	} // writeHeaders
+
+	public void writeSources(String inputFile, CommandLine line,
+		Hashtable<String, PhazeStruct> structs) throws Exception {
+
+		/*----------------------------------------------------------------------*
+		 * Create file and write generic comment
+		 *----------------------------------------------------------------------*/
+
+		int slash = inputFile.lastIndexOf('/');
+		String inputDir = slash == -1 ? "./" : inputFile.substring(0, slash);
+
+		String path = line.hasOption("d") ?
+			line.getOptionValue("d") : inputDir;
+
+		/*----------------------------------------------------------------------*
+		 * Source setup
+		 *----------------------------------------------------------------------*/
+
+		source_ = new PrintWriter(path + "/phaze.c");
+
+		source_.print(String.format(bp_.genericHeader(inputFile)));
+
+		source_.println("\n#include <phaze.h>\n");
+
+		/*----------------------------------------------------------------------*
+		 * Create static instance of phaze_t struct
+		 *----------------------------------------------------------------------*/
+
+		source_.println("phaze_t phz;");
+
+		/*----------------------------------------------------------------------*
+		 * Finalize source
+		 *----------------------------------------------------------------------*/
+
+		source_.close();
+	} // writeSources
 
 } // class PhazeBasicWriter
