@@ -11,6 +11,7 @@
 cell {
 	// pos32_t is a dimension-dependant type
 	pos32_t p;
+	int32_t num_burning;
 }
 
 /*----------------------------------------------------------------------------*

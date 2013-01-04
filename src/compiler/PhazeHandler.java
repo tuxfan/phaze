@@ -63,12 +63,12 @@ public class PhazeHandler extends phazeBaseListener {
 
 		if(line_.hasOption("l")) {
 			String value = line_.getOptionValue("l");
-System.out.println("has layout option: " + value);
 			if(value.equals("AoS")) {
 				writer = new PhazeBasicAoSWriter();
 			}
 			else {
 				writer = new PhazeBasicSoAWriter();
+System.out.print("SoA");
 			} // if
 		}
 		else {

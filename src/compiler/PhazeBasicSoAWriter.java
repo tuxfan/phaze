@@ -11,7 +11,7 @@ import java.util.*;
 public class PhazeBasicSoAWriter implements PhazeWriter {
 
 	private PhazeBoilerPlate bp_;
-	private PrintWriter file_;
+	private PrintWriter header_;
 
 	public PhazeBasicSoAWriter() {
 		bp_ = new PhazeBoilerPlateC();
@@ -55,12 +55,12 @@ public class PhazeBasicSoAWriter implements PhazeWriter {
 			line.getOptionValue("d") : inputDir;
 // FIXME
 
-		file_ = new PrintWriter(path + "/phaze.h");
+		header_ = new PrintWriter(path + "/phaze.h");
 
-		file_.print(String.format(bp_.genericHeader(inputFile)));
+		header_.print(String.format(bp_.genericHeader(inputFile)));
 
-		file_.print("\n#ifndef phaze_h\n");
-		file_.print("#define phaze_h\n\n");
+		header_.print("\n#ifndef phaze_h\n");
+		header_.print("#define phaze_h\n\n");
 
 		/*----------------------------------------------------------------------*
 		 *
@@ -71,7 +71,7 @@ public class PhazeBasicSoAWriter implements PhazeWriter {
 		while(ita.hasNext()) {
 			PhazeVariable var = ita.next();
 
-			file_.println(var.staticString());
+			header_.println(var.staticString());
 		} // while
 */
 
@@ -79,37 +79,37 @@ public class PhazeBasicSoAWriter implements PhazeWriter {
 		 *
 		 *----------------------------------------------------------------------*/
 
-		file_.print(bp_.startComment());
-		file_.println(" * cell_t structure prototype");
-		file_.println(bp_.endComment());
+		header_.print(bp_.startComment());
+		header_.println(" * cell_t structure prototype");
+		header_.println(bp_.endComment());
 
-		file_.println("struct cell_t {");
+		header_.println("struct cell_t {");
 		printVariables(structs.get("cell").variables());
-		file_.println("}; // struct cell_t\n");
+		header_.println("}; // struct cell_t\n");
 
 		/*----------------------------------------------------------------------*
 		 *
 		 *----------------------------------------------------------------------*/
 
-		file_.print(bp_.startComment());
-		file_.println(" * material_t structure prototype");
-		file_.println(bp_.endComment());
+		header_.print(bp_.startComment());
+		header_.println(" * material_t structure prototype");
+		header_.println(bp_.endComment());
 
-		file_.println("struct material_t {");
+		header_.println("struct material_t {");
 		printVariables(structs.get("material").variables());
-		file_.println("}; // struct material_t\n");
+		header_.println("}; // struct material_t\n");
 
 //
 //
 //
 
 		// static interface
-		file_.print(bp_.staticInterface());
+		header_.print(bp_.staticInterface());
 
 		// header file finalization
-		file_.print("\n#endif // phaze_h\n");
+		header_.print("\n#endif // phaze_h\n");
 
-		file_.close();
+		header_.close();
 	} // writeHeader
 
 	void printVariables(Set<PhazeVariable> vars) {
@@ -120,14 +120,14 @@ public class PhazeBasicSoAWriter implements PhazeWriter {
 			switch(var.type) {
 				case pos32:
 				case vec32:
-					file_.println("\tfloat * " + var.id + ";");
+					header_.println("\tfloat * " + var.id + ";");
 					break;
 				case pos64:
 				case vec64:
-					file_.println("\tdouble * " + var.id + ";");
+					header_.println("\tdouble * " + var.id + ";");
 					break;
 				default:
-					file_.println("\t" + var.type.toString() +
+					header_.println("\t" + var.type.toString() +
 						" * " + var.id + ";");
 					break;
 			} // switch

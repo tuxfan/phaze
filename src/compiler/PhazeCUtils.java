@@ -23,7 +23,7 @@ public class PhazeCUtils {
 						var.arraySize*dimension + "];";
 
 				case real64:
-					return "\tfloat " + var.id + "[" +
+					return "\tdouble " + var.id + "[" +
 						var.arraySize + "];";
 
 				case pos64:
