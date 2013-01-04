@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*
- * PhazeBasicAoSWriter
+ * PhazeBasicWriter
  *----------------------------------------------------------------------------*/
 
 package Phaze;
@@ -8,15 +8,15 @@ import org.apache.commons.cli.*;
 import java.io.*;
 import java.util.*;
 
-public class PhazeBasicAoSWriter implements PhazeWriter {
+public class PhazeBasicWriter implements PhazeWriter {
 
 	private PhazeBoilerPlate bp_;
 	private PrintWriter types_;
 	private PrintWriter header_;
 
-	public PhazeBasicAoSWriter() {
+	public PhazeBasicWriter() {
 		bp_ = new PhazeBoilerPlateC();
-	} // PhazeBasicAoSWriter
+	} // PhazeBasicWriter
 
 	public void writeHeader(String inputFile, CommandLine line,
 		Hashtable<String, PhazeStruct> structs) throws Exception {
@@ -86,7 +86,7 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		types_.print("#endif\n\n");
 
 		/*----------------------------------------------------------------------*
-		 *
+		 * Options
 		 *----------------------------------------------------------------------*/
 
 /*
@@ -102,6 +102,16 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		int dim = line.hasOption("D") ?
 			Integer.parseInt(line.getOptionValue("D")) : 3;
 
+		boolean aos = true;
+		
+		if(line.hasOption("l")) {
+			String value = line.getOptionValue("l");
+
+			if(value.equals("SoA")) {
+				aos = false;
+			}
+		} // if
+
 		/*----------------------------------------------------------------------*
 		 * Output cell_t
 		 *----------------------------------------------------------------------*/
@@ -110,8 +120,16 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		types_.println(" * cell_t structure prototype");
 		types_.println(bp_.endComment());
 		types_.println("struct cell_t {");
-		PhazeCUtils.printAsLocals(types_,
-			structs.get("cell").variables(), dim);
+
+		if(aos) {
+			PhazeCUtils.printAsLocals(types_,
+				structs.get("cell").variables(), dim);
+		}
+		else {
+			PhazeCUtils.printAsPointers(types_,
+				structs.get("cell").variables());
+		} // if
+
 		types_.println("\tchar _phz_private[32];");
 		types_.println("}; // struct cell_t\n");
 
@@ -125,8 +143,16 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		types_.println(" * material_t structure prototype");
 		types_.println(bp_.endComment());
 		types_.println("struct material_t {");
-		PhazeCUtils.printAsLocals(types_,
-			structs.get("material").variables(), dim);
+
+		if(aos) {
+			PhazeCUtils.printAsLocals(types_,
+				structs.get("material").variables(), dim);
+		}
+		else {
+			PhazeCUtils.printAsPointers(types_,
+				structs.get("material").variables());
+		} // if
+
 		types_.println("\tchar _phz_private[32];");
 		types_.println("}; // struct material_t\n");
 
@@ -140,12 +166,20 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		types_.println(" * composition_t structure prototype");
 		types_.println(bp_.endComment());
 		types_.println("struct composition_t {");
-		PhazeCUtils.printAsLocals(types_,
-			structs.get("composition").variables(), dim);
+
+		if(aos) {
+			PhazeCUtils.printAsLocals(types_,
+				structs.get("composition").variables(), dim);
+		}
+		else {
+			PhazeCUtils.printAsPointers(types_,
+				structs.get("composition").variables());
+		} // if
+
 		types_.println("\tchar _phz_private[32];");
 		types_.println("}; // struct composition_t\n");
 
-		types_.println("typedef material_t * phz_composition;\n");
+		types_.println("typedef material_t * phz_composition;");
 
 //
 //
@@ -169,4 +203,4 @@ public class PhazeBasicAoSWriter implements PhazeWriter {
 		types_.close();
 	} // writeHeader
 
-} // class PhazeBasicAoSWriter
+} // class PhazeBasicWriter

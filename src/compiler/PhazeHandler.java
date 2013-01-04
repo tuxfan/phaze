@@ -61,19 +61,21 @@ public class PhazeHandler extends phazeBaseListener {
 // FIXME: Need to see if this can be done with an object factory
 		PhazeWriter writer = null;
 
-		if(line_.hasOption("l")) {
-			String value = line_.getOptionValue("l");
-			if(value.equals("AoS")) {
-				writer = new PhazeBasicAoSWriter();
-			}
-			else {
-				writer = new PhazeBasicSoAWriter();
-System.out.print("SoA");
-			} // if
-		}
-		else {
-			writer = new PhazeBasicAoSWriter();
-		} // if
+//		if(line_.hasOption("l")) {
+//			String value = line_.getOptionValue("l");
+//			if(value.equals("AoS")) {
+//				writer = new PhazeBasicAoSWriter();
+//			}
+//			else {
+//				writer = new PhazeBasicSoAWriter();
+//System.out.print("SoA");
+//			} // if
+//		}
+//		else {
+//			writer = new PhazeBasicAoSWriter();
+//		} // if
+
+		writer = new PhazeBasicWriter();
 
 		try {
 			writer.writeHeader(inputFile_, line_, structs_);
