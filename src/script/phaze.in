@@ -1,3 +1,5 @@
 #! /usr/bin/env bash
 
-java -jar @PATH@/phaze.jar $*
+export PHAZE_BASE_DIRECTORY=@PATH@
+
+java -jar @PATH@/jar/phaze.jar $*

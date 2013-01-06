@@ -61,7 +61,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		 * header setup
 		 *----------------------------------------------------------------------*/
 
-		header_ = new PrintWriter(path + "/phaze.h");
+		header_ = new PrintWriter(path + "/src/phaze.h");
 
 		header_.print(String.format(bp_.genericHeader(inputFile)));
 
@@ -70,12 +70,13 @@ public class PhazeBasicWriter implements PhazeWriter {
 
 		header_.print("#define _include_phaze_h\n");
 		header_.print("#include <phztypes.h>\n\n");
+		header_.print("#include <stddef.h>\n\n");
 
 		/*----------------------------------------------------------------------*
 		 * types setup
 		 *----------------------------------------------------------------------*/
 
-		types_ = new PrintWriter(path + "/phztypes.h");
+		types_ = new PrintWriter(path + "/src/phztypes.h");
 
 		types_.print(String.format(bp_.genericHeader(inputFile)));
 
@@ -85,6 +86,8 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.print("#error \"Error: do not include this file directly");
 		types_.print(", use #include <phaze.h>\"\n");
 		types_.print("#endif\n\n");
+
+		types_.print("#include <inttypes.h>\n\n");
 
 		/*----------------------------------------------------------------------*
 		 * Options
@@ -120,7 +123,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.print(bp_.startComment());
 		types_.println(" * cell_t structure prototype");
 		types_.println(bp_.endComment());
-		types_.println("struct cell_t {");
+		types_.println("typedef struct {");
 
 		if(aos) {
 			PhazeCUtils.printAsLocals(types_,
@@ -132,7 +135,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		} // if
 
 		types_.println("\tchar _phz_private[32];");
-		types_.println("}; // struct cell_t\n");
+		types_.println("} cell_t;\n");
 
 		types_.println("typedef cell_t * phz_cell;\n");
 
@@ -143,7 +146,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.print(bp_.startComment());
 		types_.println(" * material_t structure prototype");
 		types_.println(bp_.endComment());
-		types_.println("struct material_t {");
+		types_.println("typedef struct {");
 
 		if(aos) {
 			PhazeCUtils.printAsLocals(types_,
@@ -155,7 +158,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		} // if
 
 		types_.println("\tchar _phz_private[32];");
-		types_.println("}; // struct material_t\n");
+		types_.println("} material_t;\n");
 
 		types_.println("typedef material_t * phz_material;\n");
 
@@ -166,7 +169,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.print(bp_.startComment());
 		types_.println(" * composition_t structure prototype");
 		types_.println(bp_.endComment());
-		types_.println("struct composition_t {");
+		types_.println("typedef struct {");
 
 		if(aos) {
 			PhazeCUtils.printAsLocals(types_,
@@ -178,9 +181,9 @@ public class PhazeBasicWriter implements PhazeWriter {
 		} // if
 
 		types_.println("\tchar _phz_private[32];");
-		types_.println("}; // struct composition_t\n");
+		types_.println("} composition_t;\n");
 
-		types_.println("typedef material_t * phz_composition;\n");
+		types_.println("typedef composition_t * phz_composition;\n");
 
 		/*----------------------------------------------------------------------*
 		 * Output phaze_t
@@ -189,10 +192,10 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.print(bp_.startComment());
 		types_.println(" * phaze_t structure prototype");
 		types_.println(bp_.endComment());
-		types_.println("struct phaze_t {");
+		types_.println("typedef struct {");
 		types_.println("\tvoid * begin;");
-		types_.println("\tcell_t * cells;");
-		types_.println("} // struct phaze_t");
+		types_.println("\tstruct cell_t * cells;");
+		types_.println("} phaze_t;");
 
 //
 //
@@ -233,7 +236,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		 * Source setup
 		 *----------------------------------------------------------------------*/
 
-		source_ = new PrintWriter(path + "/phaze.c");
+		source_ = new PrintWriter(path + "/src/phaze.c");
 
 		source_.print(String.format(bp_.genericHeader(inputFile)));
 

@@ -7,6 +7,8 @@ package Phaze;
 import org.apache.commons.cli.*;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
+import java.io.File;
+import java.nio.file.*;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
@@ -22,7 +24,11 @@ public class Main {
 
 		// help
 		opts.addOption("h", "help", false,
-			"print this message and exit.");
+			"print this message and exit");
+
+		// output build files
+		opts.addOption("b", "buildfiles", false,
+			"output build files");
 
 		// output directory
 		opts.addOption(OptionBuilder.withArgName("input directory")
@@ -98,8 +104,56 @@ public class Main {
 		// process the input
 		walker.walk(phzHandler, tree);
 
+		// get the output path
+		String path = PhazeUtils.targetDir(inputFile, line);
+
+		// create output src directory
+		(new File(path + "/src")).mkdir();
+
 		// write output
 		phzHandler.write();
+
+		// handle build system
+		if(line.hasOption("b")) {
+			String baseDir = System.getenv("PHAZE_BASE_DIRECTORY");
+
+			// check that the base installation is set
+			if(baseDir == null) {
+				System.err.println("error: PHAZE_BASE_DIRECTORY " +
+					"environment variable not set");
+				System.err.println("Build system not created");
+			} // if
+
+			String shareDir = baseDir + "/share";
+
+			Path sourceDir = Paths.get(shareDir);
+			Path destDir = Paths.get(path);
+
+			if(!Files.exists(destDir)) {
+System.out.println("dir does not exist");
+			} // if
+
+			Files.walkFileTree(sourceDir, new PhazeCopyFileVisitor(destDir));
+
+//			Files.createDirectory(dir);
+
+//			File sourceDir = new File(shareDir);
+//			File destDir = new File(path);
+
+			// check that dirs exist
+//			if(!sourceDir.exists() || !destDir.exists()) {
+//				System.err.print("error: directory creation failed");
+//				System.err.println("Build system not created");
+//			} // if
+
+//			try{
+//				FileUtils.copyDirectory(sourceDir, destDir);
+//			}
+//			catch(Exception e) {
+//				System.err.println("error: copyDirectory failed");
+//				System.err.println("Build system not created");
+//			} // try
+		} // if
 	} // main
 
 } // class Main

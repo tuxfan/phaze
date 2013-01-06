@@ -14,6 +14,7 @@
 	<property name="dist" location="${basedir}/dist"/>
 	<property name="utils" location="${basedir}/utils"/>
 	<property name="samples" location="${basedir}/samples"/>
+	<property name="share" location="${basedir}/share"/>
 
 	<property name="version" value="phaze-0.1-beta"/>
 
@@ -48,6 +49,7 @@
 
 		<zipfileset includes="**/*.class" src="${antlr4.jar}"/>
 		<zipfileset includes="**/*.class" src="${cli.jar}"/>
+		<zipfileset includes="**/*.class" src="${io.jar}"/>
 
 		<manifest>
 			<attribute name="Main-Class" value="Phaze.Main"/>
@@ -88,41 +90,51 @@
 		 ! Create wrapper
 		 !=================================================================== -->
 		<mkdir dir="${build}/bin"/>
-		<copy file="src/script/phaze.in" tofile="build/bin/phaze">
+		<copy file="${src}/script/phaze.in" tofile="build/bin/phaze">
 			<filterset>
-				<filter token="PATH" value="${build}/jar"/>
+				<filter token="PATH" value="${build}"/>
 			</filterset>
 		</copy>
-		<chmod file="build/bin/phaze" perm="+x"/>
+		<chmod file="${build}/bin/phaze" perm="+x"/>
 	</target>
 
 	<!-- ======================================================================!
 	 ! Install
 	 !======================================================================= -->
 	<target name="install">
+		<mkdir dir="${install}/phaze"/>
 		<mkdir dir="${install}/phaze/jar"/>
 		<mkdir dir="${install}/phaze/bin"/>
+		<mkdir dir="${install}/phaze/share"/>
 
-		<copy file="src/script/phaze.in" tofile="${install}/phaze/bin/phaze">
+		<copy file="${src}/script/phaze.in" tofile="${install}/phaze/bin/phaze">
 			<filterset>
-				<filter token="PATH" value="${install}/phaze/jar"/>
+				<filter token="PATH" value="${install}/phaze"/>
 			</filterset>
 		</copy>
 		<chmod file="${install}/phaze/bin/phaze" perm="+x"/>
 
-		<copy file="build/jar/phaze.jar" todir="${install}/phaze/jar"/>
+		<copy file="${build}/jar/phaze.jar" todir="${install}/phaze/jar"/>
+
+		<copy todir="${install}/phaze/share">
+			<fileset dir="${share}"/>
+		</copy>
 	</target>
 
 	<!-- ======================================================================!
 	 ! Distribution
 	 !======================================================================= -->
 	<target name="dist" depends="phaze">
+
+		<!-- Create temporary dist directories -->
 		<mkdir dir="${dist}"/>
 		<mkdir dir="${build}/dist/${version}"/>
 		<mkdir dir="${build}/dist/${version}/bin"/>
 		<mkdir dir="${build}/dist/${version}/jar"/>
 		<mkdir dir="${build}/dist/${version}/samples"/>
+		<mkdir dir="${build}/dist/${version}/share"/>
 
+		<!-- Copy file into temporary dist directory -->
 		<copy file="${src}/script/phaze.in"
 			tofile="${build}/dist/${version}/bin/phaze.in"/>
 		<copy file="${src}/script/install" todir="${build}/dist/${version}"/>
@@ -131,7 +143,11 @@
 		<copy todir="${build}/dist/${version}/samples">
 			<fileset dir="${samples}"/>
 		</copy>
+		<copy todir="${build}/dist/${version}/share">
+			<fileset dir="${share}"/>
+		</copy>
 
+		<!-- Create archive-->
 		<tar destfile="${build}/${version}.tar">
 			<tarfileset dir="${build}/dist" filemode="755">
 				<include name="${version}/install"/>
@@ -141,9 +157,9 @@
 				<exclude name="${version}/install"/>
 			</tarfileset>
 		</tar>
-
 		<gzip src="${build}/${version}.tar" destfile="${dist}/${version}.tgz"/>
 
+		<!-- Clean up -->
 		<delete dir="${build}/dist"/>
 		<delete file="${build}/${version}.tar"/>
 	</target>
@@ -158,12 +174,19 @@
 		<!-- Create the build directory -->
 		<mkdir dir="${build}"/>
 		<mkdir dir="${build}/phaze"/>
+		<mkdir dir="${build}/share"/>
 
 		<exec executable="${utils}/create_static_interface">
 		<arg value="PhazeInterfaceC"/>
 		<arg value="${src}/interface/static_interface_c.h"/>
 		<arg value="${build}/phaze/PhazeInterfaceC.java"/>
 		</exec>
+
+		<copy todir="${build}/share">
+			<fileset dir="${share}"/>
+		</copy>
+		<chmod file="${build}/share/config/bootstrap" perm="+x"/>
+		<chmod file="${build}/share/config/clean_ac" perm="+x"/>
 	</target>
 
 	<!-- ======================================================================!
