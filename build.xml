@@ -146,15 +146,28 @@
 		<copy todir="${build}/dist/${version}/share">
 			<fileset dir="${share}"/>
 		</copy>
+		<chmod file="${build}/dist/${version}/share/config/bootstrap" perm="+x"/>
+		<chmod file="${build}/dist/${version}/share/config/clean_ac" perm="+x"/>
 
 		<!-- Create archive-->
 		<tar destfile="${build}/${version}.tar">
 			<tarfileset dir="${build}/dist" filemode="755">
+
+				<!-- include executable files -->
 				<include name="${version}/install"/>
+				<include name="${version}/share/config/bootstrap"/>
+				<include name="${version}/share/config/clean_ac"/>
+
 			</tarfileset>
 			<tarfileset dir="${build}/dist">
+
 				<include name="${version}/**"/>
+
+				<!-- exclude executable files -->
 				<exclude name="${version}/install"/>
+				<exclude name="${version}/share/config/bootstrap"/>
+				<exclude name="${version}/share/config/clean_ac"/>
+
 			</tarfileset>
 		</tar>
 		<gzip src="${build}/${version}.tar" destfile="${dist}/${version}.tgz"/>

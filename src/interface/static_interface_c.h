@@ -23,6 +23,7 @@ int32_t phz_set_material(phz_cell cell, size_t index,
 
 /* isotope interface */
 
+#if 0
 int32_t phz_num_isotopes(phz_material material, size_t * count);
 
 int32_t phz_get_isotope(phz_material material, size_t * index,
@@ -30,3 +31,4 @@ int32_t phz_get_isotope(phz_material material, size_t * index,
 
 int32_t phz_set_isotope(phz_material material, size_t * index,
 	phz_isotope isotope);
+#endif

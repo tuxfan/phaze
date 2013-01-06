@@ -18,14 +18,16 @@ echo "Installing to $path"
 bindir=$path/bin
 jardir=$path/jar
 sampledir=$path/samples
+sharedir=$path/share
 
 # create directories
 mkdir -p $bindir
 mkdir -p $jardir
 mkdir -p $sampledir
+mkdir -p $sharedir
 
 # create phaze script
-cat bin/phaze.in | sed "s,@PATH@,$jardir,g" > $bindir/phaze
+cat bin/phaze.in | sed "s,@PATH@,$path,g" > $bindir/phaze
 chmod 755 $bindir/phaze
 
 # copy jar file
@@ -33,6 +35,9 @@ cp jar/phaze.jar $jardir
 
 # copy samples
 cp samples/* $sampledir
+
+# copy share
+cp -r share/* $sharedir
 
 # finished
 echo "Installation Complete!"
