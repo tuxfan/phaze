@@ -2,6 +2,14 @@
  * Phaze static interface
  *----------------------------------------------------------------------------*/
 
+/* initialization */
+
+int32_t phz_init();
+
+/* allocate cells */
+
+int32_t phz_add_cells(size_t cells);
+
 /* cell interface */
 
 int32_t phz_get_cell(size_t cid, phz_cell cell);
@@ -32,3 +40,7 @@ int32_t phz_get_isotope(phz_material material, size_t * index,
 int32_t phz_set_isotope(phz_material material, size_t * index,
 	phz_isotope isotope);
 #endif
+
+/* filanlization */
+
+int32_t phz_finalize();

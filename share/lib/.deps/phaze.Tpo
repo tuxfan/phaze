@@ -1,5 +1,0 @@
-phaze.lo .libs/phaze.o: ../src/phaze.c ../src/phaze.h ../src/phztypes.h
-
-../src/phaze.h:
-
-../src/phztypes.h:

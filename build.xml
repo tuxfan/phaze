@@ -157,6 +157,7 @@
 				<include name="${version}/install"/>
 				<include name="${version}/share/config/bootstrap"/>
 				<include name="${version}/share/config/clean_ac"/>
+				<include name="${version}/share/config/create_lib_am"/>
 
 			</tarfileset>
 			<tarfileset dir="${build}/dist">
@@ -167,6 +168,7 @@
 				<exclude name="${version}/install"/>
 				<exclude name="${version}/share/config/bootstrap"/>
 				<exclude name="${version}/share/config/clean_ac"/>
+				<exclude name="${version}/share/config/create_lib_am"/>
 
 			</tarfileset>
 		</tar>
@@ -200,6 +202,7 @@
 		</copy>
 		<chmod file="${build}/share/config/bootstrap" perm="+x"/>
 		<chmod file="${build}/share/config/clean_ac" perm="+x"/>
+		<chmod file="${build}/share/config/create_lib_am" perm="+x"/>
 	</target>
 
 	<!-- ======================================================================!

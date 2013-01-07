@@ -70,7 +70,6 @@ public class PhazeBasicWriter implements PhazeWriter {
 
 		header_.print("#define _include_phaze_h\n");
 		header_.print("#include <phztypes.h>\n\n");
-		header_.print("#include <stddef.h>\n\n");
 
 		/*----------------------------------------------------------------------*
 		 * types setup
@@ -88,6 +87,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.print("#endif\n\n");
 
 		types_.print("#include <inttypes.h>\n\n");
+		types_.print("#include <stddef.h>\n\n");
 
 		/*----------------------------------------------------------------------*
 		 * Options
@@ -193,8 +193,8 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.println(" * phaze_t structure prototype");
 		types_.println(bp_.endComment());
 		types_.println("typedef struct {");
-		types_.println("\tvoid * begin;");
-		types_.println("\tstruct cell_t * cells;");
+		types_.println("\tsize_t num_cells;");
+		types_.println("\tcell_t * cell_data;");
 		types_.println("} phaze_t;");
 
 //
@@ -246,7 +246,23 @@ public class PhazeBasicWriter implements PhazeWriter {
 		 * Create static instance of phaze_t struct
 		 *----------------------------------------------------------------------*/
 
-		source_.println("phaze_t phz;");
+		source_.println("phaze_t phz;\n");
+
+		/*----------------------------------------------------------------------*
+		 * Initialization
+		 *----------------------------------------------------------------------*/
+
+		source_.println("int32_t phz_init() {");
+		source_.println("\tphz.num_cells = 0;");
+		source_.println("\tphz.cell_data = NULL;");
+		source_.println("} // phz_init\n");
+
+		/*----------------------------------------------------------------------*
+		 * Finalization
+		 *----------------------------------------------------------------------*/
+
+		source_.println("int32_t phz_finalize() {");
+		source_.println("} // phz_finalize");
 
 		/*----------------------------------------------------------------------*
 		 * Finalize source
