@@ -117,52 +117,6 @@ public class PhazeBasicWriter implements PhazeWriter {
 		} // if
 
 		/*----------------------------------------------------------------------*
-		 * Output cell_t
-		 *----------------------------------------------------------------------*/
-
-		types_.print(bp_.startComment());
-		types_.println(" * cell_t structure prototype");
-		types_.println(bp_.endComment());
-		types_.println("typedef struct {");
-
-		if(aos) {
-			PhazeCUtils.printAsLocals(types_,
-				structs.get("cell").variables(), dim);
-		}
-		else {
-			PhazeCUtils.printAsPointers(types_,
-				structs.get("cell").variables());
-		} // if
-
-		types_.println("\tchar _phz_private[32];");
-		types_.println("} cell_t;\n");
-
-		types_.println("typedef cell_t * phz_cell;\n");
-
-		/*----------------------------------------------------------------------*
-		 * Output material_t
-		 *----------------------------------------------------------------------*/
-
-		types_.print(bp_.startComment());
-		types_.println(" * material_t structure prototype");
-		types_.println(bp_.endComment());
-		types_.println("typedef struct {");
-
-		if(aos) {
-			PhazeCUtils.printAsLocals(types_,
-				structs.get("material").variables(), dim);
-		}
-		else {
-			PhazeCUtils.printAsPointers(types_,
-				structs.get("material").variables());
-		} // if
-
-		types_.println("\tchar _phz_private[32];");
-		types_.println("} material_t;\n");
-
-		types_.println("typedef material_t * phz_material;\n");
-
-		/*----------------------------------------------------------------------*
 		 * Output composition_t
 		 *----------------------------------------------------------------------*/
 
@@ -186,6 +140,58 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.println("typedef composition_t * phz_composition;\n");
 
 		/*----------------------------------------------------------------------*
+		 * Output material_t
+		 *----------------------------------------------------------------------*/
+
+		types_.print(bp_.startComment());
+		types_.println(" * material_t structure prototype");
+		types_.println(bp_.endComment());
+		types_.println("typedef struct {");
+		types_.println("\t// user-defined data");
+
+		if(aos) {
+			PhazeCUtils.printAsLocals(types_,
+				structs.get("material").variables(), dim);
+		}
+		else {
+			PhazeCUtils.printAsPointers(types_,
+				structs.get("material").variables());
+		} // if
+
+		types_.println("\n\t// phaze data");
+		types_.println("\tcomposition_t * _phz_composition;");
+		types_.println("} material_t;\n");
+
+		types_.println("typedef material_t * phz_material;\n");
+
+		/*----------------------------------------------------------------------*
+		 * Output cell_t
+		 *----------------------------------------------------------------------*/
+
+		types_.print(bp_.startComment());
+		types_.println(" * cell_t structure prototype");
+		types_.println(bp_.endComment());
+		types_.println("typedef struct {");
+		types_.println("\t// user-defined data");
+
+		if(aos) {
+			PhazeCUtils.printAsLocals(types_,
+				structs.get("cell").variables(), dim);
+		}
+		else {
+			PhazeCUtils.printAsPointers(types_,
+				structs.get("cell").variables());
+		} // if
+
+		types_.println("\n\t// phaze data");
+		types_.println("\tsize_t _phz_id;");
+		types_.println("\tsize_t _phz_num_materials;");
+		types_.println("\tmaterial_t * _phz_material_data;");
+		types_.println("} cell_t;\n");
+
+		types_.println("typedef cell_t * phz_cell;\n");
+
+		/*----------------------------------------------------------------------*
 		 * Output phaze_t
 		 *----------------------------------------------------------------------*/
 
@@ -193,16 +199,19 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.println(" * phaze_t structure prototype");
 		types_.println(bp_.endComment());
 		types_.println("typedef struct {");
-		types_.println("\tsize_t num_cells;");
+		types_.println("\tsize_t cell_data_els;");
 		types_.println("\tcell_t * cell_data;");
 		types_.println("} phaze_t;");
 
-//
-//
-//
+		/*----------------------------------------------------------------------*
+		 * Static interface
+		 *----------------------------------------------------------------------*/
 
-		// static interface
 		header_.print(bp_.staticInterface());
+
+		/*----------------------------------------------------------------------*
+		 * User-defined interface
+		 *----------------------------------------------------------------------*/
 
 		/*----------------------------------------------------------------------*
 		 * Finalize header
@@ -253,7 +262,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		 *----------------------------------------------------------------------*/
 
 		source_.println("int32_t phz_init() {");
-		source_.println("\tphz.num_cells = 0;");
+		source_.println("\tphz.cell_data_els = 0;");
 		source_.println("\tphz.cell_data = NULL;");
 		source_.println("} // phz_init\n");
 
