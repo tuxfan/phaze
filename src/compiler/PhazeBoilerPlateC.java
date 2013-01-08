@@ -14,6 +14,16 @@ public class PhazeBoilerPlateC implements PhazeBoilerPlate {
 		" *--------------------------------------" +
 		"--------------------------------------*/\n";
 
+	static final String cpp_extern_start_ =
+		"#ifdef __cplusplus\n" +
+		"extern \"C\" {\n" +
+		"#endif\n";
+
+	static final String cpp_extern_end_ =
+		"#ifdef __cplusplus\n" +
+		"} // extern\n" +
+		"#endif\n";
+
 	static final String header_ = comment_start_ +
 		" * Copyright (c) 2012 Los Alamos National Security, LLC\n" +
 		" * All rights reserved.\n" +
@@ -30,6 +40,9 @@ public class PhazeBoilerPlateC implements PhazeBoilerPlate {
 	public String genericHeader(String inputFile) {
 		return String.format(header_, inputFile);
 	} // genericHeader
+
+	public String headerPrologue() { return cpp_extern_start_; }
+	public String headerEpilogue() { return cpp_extern_end_; }
 
 	public String staticInterface() { return PhazeInterfaceC.staticInterface; }
 

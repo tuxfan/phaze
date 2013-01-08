@@ -68,9 +68,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		header_.print("\n#ifndef phaze_h\n");
 		header_.print("#define phaze_h\n\n");
 
-		header_.print("#ifdef __cplusplus\n");
-		header_.print("extern \"C\" {\n");
-		header_.print("#endif\n\n");
+		header_.println(bp_.headerPrologue());
 
 		header_.print("#define _include_phaze_h\n");
 		header_.print("#include <phztypes.h>\n\n");
@@ -221,10 +219,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		 * Finalize header
 		 *----------------------------------------------------------------------*/
 
-		header_.print("#ifdef __cplusplus\n");
-		header_.print("} // extern\n");
-		header_.print("#endif\n");
-
+		header_.println(bp_.headerEpilogue());
 		header_.print("\n#endif // phaze_h\n");
 		header_.close();
 
