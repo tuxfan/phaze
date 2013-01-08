@@ -68,6 +68,10 @@ public class PhazeBasicWriter implements PhazeWriter {
 		header_.print("\n#ifndef phaze_h\n");
 		header_.print("#define phaze_h\n\n");
 
+		header_.print("#ifdef __cplusplus\n");
+		header_.print("extern \"C\" {\n");
+		header_.print("#endif\n\n");
+
 		header_.print("#define _include_phaze_h\n");
 		header_.print("#include <phztypes.h>\n\n");
 
@@ -201,7 +205,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.println("typedef struct {");
 		types_.println("\tsize_t cell_data_els;");
 		types_.println("\tcell_t * cell_data;");
-		types_.println("} phaze_t;");
+		types_.println("} phaze_t;\n");
 
 		/*----------------------------------------------------------------------*
 		 * Static interface
@@ -216,6 +220,10 @@ public class PhazeBasicWriter implements PhazeWriter {
 		/*----------------------------------------------------------------------*
 		 * Finalize header
 		 *----------------------------------------------------------------------*/
+
+		header_.print("#ifdef __cplusplus\n");
+		header_.print("} // extern\n");
+		header_.print("#endif\n");
 
 		header_.print("\n#endif // phaze_h\n");
 		header_.close();
