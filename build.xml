@@ -192,9 +192,16 @@
 		<mkdir dir="${build}/share"/>
 
 		<exec executable="${utils}/create_static_interface">
-		<arg value="PhazeInterfaceC"/>
+		<arg value="PhazeInterfaceCHeader"/>
 		<arg value="${src}/interface/static_interface_c.h"/>
-		<arg value="${build}/phaze/PhazeInterfaceC.java"/>
+		<arg value="${build}/phaze/PhazeInterfaceCHeader.java"/>
+		</exec>
+
+		<!-- AoS static interface implementation -->
+		<exec executable="${utils}/create_static_interface">
+		<arg value="PhazeInterfaceCSourceAoS"/>
+		<arg value="${src}/interface/static_interface_c_aos.c"/>
+		<arg value="${build}/phaze/PhazeInterfaceCSourceAoS.java"/>
 		</exec>
 
 		<copy todir="${build}/share">

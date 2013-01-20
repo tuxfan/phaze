@@ -4,7 +4,7 @@
 
 package Phaze;
 
-public class PhazeBoilerPlateC implements PhazeBoilerPlate {
+public class PhazeBoilerPlateCAoS implements PhazeBoilerPlate {
 
 	static final String comment_start_ =
 		"/*--------------------------------------" +
@@ -44,6 +44,12 @@ public class PhazeBoilerPlateC implements PhazeBoilerPlate {
 	public String headerPrologue() { return cpp_extern_start_; }
 	public String headerEpilogue() { return cpp_extern_end_; }
 
-	public String staticInterface() { return PhazeInterfaceC.staticInterface; }
+	public String staticInterfaceHeader() {
+		return PhazeInterfaceCHeader.staticInterface;
+	}
 
-} // class PhazeBoilerPlate
+	public String staticInterfaceSource() {
+		return PhazeInterfaceCSourceAoS.staticInterface;
+	}
+
+} // class PhazeBoilerPlateCAoS

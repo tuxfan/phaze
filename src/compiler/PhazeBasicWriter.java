@@ -16,7 +16,8 @@ public class PhazeBasicWriter implements PhazeWriter {
 	private PrintWriter source_;
 
 	public PhazeBasicWriter() {
-		bp_ = new PhazeBoilerPlateC();
+		// FIXME: need type selection based on user input
+		bp_ = new PhazeBoilerPlateCAoS();
 	} // PhazeBasicWriter
 
 	public void writeHeaders(String inputFile, CommandLine line,
@@ -202,6 +203,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.println(bp_.endComment());
 		types_.println("typedef struct {");
 		types_.println("\tsize_t cell_data_els;");
+		types_.println("\tsize_t cell_data_allocated;");
 		types_.println("\tcell_t * cell_data;");
 		types_.println("} phaze_t;\n");
 
@@ -209,7 +211,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 		 * Static interface
 		 *----------------------------------------------------------------------*/
 
-		header_.print(bp_.staticInterface());
+		header_.print(bp_.staticInterfaceHeader());
 
 		/*----------------------------------------------------------------------*
 		 * User-defined interface
@@ -254,27 +256,7 @@ public class PhazeBasicWriter implements PhazeWriter {
 
 		source_.println("\n#include <phaze.h>\n");
 
-		/*----------------------------------------------------------------------*
-		 * Create static instance of phaze_t struct
-		 *----------------------------------------------------------------------*/
-
-		source_.println("phaze_t phz;\n");
-
-		/*----------------------------------------------------------------------*
-		 * Initialization
-		 *----------------------------------------------------------------------*/
-
-		source_.println("int32_t phz_init() {");
-		source_.println("\tphz.cell_data_els = 0;");
-		source_.println("\tphz.cell_data = NULL;");
-		source_.println("} // phz_init\n");
-
-		/*----------------------------------------------------------------------*
-		 * Finalization
-		 *----------------------------------------------------------------------*/
-
-		source_.println("int32_t phz_finalize() {");
-		source_.println("} // phz_finalize");
+		source_.print(bp_.staticInterfaceSource());
 
 		/*----------------------------------------------------------------------*
 		 * Finalize source

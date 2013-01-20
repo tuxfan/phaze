@@ -14,6 +14,7 @@ public interface PhazeBoilerPlate {
 	public String headerPrologue();
 	public String headerEpilogue();
 
-	public String staticInterface();
+	public String staticInterfaceHeader();
+	public String staticInterfaceSource();
 
 } // class PhazeBoilerPlate
