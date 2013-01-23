@@ -69,6 +69,10 @@
 			<arg value="-o"/>
 			<arg path="${build}/antlr"/>
 			<arg path="${src}/grammar/phaze.g4"/>
+
+			<classpath>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
 		</java>
 
 		<!-- ===================================================================!
@@ -148,6 +152,8 @@
 		</copy>
 		<chmod file="${build}/dist/${version}/share/config/bootstrap" perm="+x"/>
 		<chmod file="${build}/dist/${version}/share/config/clean_ac" perm="+x"/>
+		<chmod file="${build}/dist/${version}/share/config/clean_phaze"
+			perm="+x"/>
 
 		<!-- Create archive-->
 		<tar destfile="${build}/${version}.tar">
@@ -157,6 +163,7 @@
 				<include name="${version}/install"/>
 				<include name="${version}/share/config/bootstrap"/>
 				<include name="${version}/share/config/clean_ac"/>
+				<include name="${version}/share/config/clean_phaze"/>
 				<include name="${version}/share/config/create_lib_am"/>
 
 			</tarfileset>
@@ -168,6 +175,7 @@
 				<exclude name="${version}/install"/>
 				<exclude name="${version}/share/config/bootstrap"/>
 				<exclude name="${version}/share/config/clean_ac"/>
+				<exclude name="${version}/share/config/clean_phaze"/>
 				<exclude name="${version}/share/config/create_lib_am"/>
 
 			</tarfileset>
@@ -209,6 +217,7 @@
 		</copy>
 		<chmod file="${build}/share/config/bootstrap" perm="+x"/>
 		<chmod file="${build}/share/config/clean_ac" perm="+x"/>
+		<chmod file="${build}/share/config/clean_phaze" perm="+x"/>
 		<chmod file="${build}/share/config/create_lib_am" perm="+x"/>
 	</target>
 
