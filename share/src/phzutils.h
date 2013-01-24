@@ -14,16 +14,15 @@
  * Allocate cells
  *----------------------------------------------------------------------------*/
 
-inline int32_t phzutils_alloc_cells(size_t count, cell_t ** cells) {
+inline int32_t phzutils_allocate(size_t count, size_t typesize, void ** data) {
 	void * tmp = NULL;
-	int32_t err = posix_memalign(&tmp, phaze_cell_data_alignment,
-		count*sizeof(cell_t));
+	int32_t err = posix_memalign(&tmp, phaze_data_alignment, count*typesize);
 
 	if(err != 0) {
 		return PHAZE_MALLOC_ERROR;
 	} // if
 
-	*cells = (cell_t *)tmp;
+	*data = tmp;
 
 	return 0;
 } // phzutils_alloc_cells
@@ -32,16 +31,17 @@ inline int32_t phzutils_alloc_cells(size_t count, cell_t ** cells) {
  * Reallocate cells
  *----------------------------------------------------------------------------*/
 
-inline int32_t phzutils_realloc_cells(size_t size, size_t count,
-	cell_t ** cells) {
-	cell_t * tmp;
+inline int32_t phzutils_reallocate(size_t count, size_t newcount,
+	size_t typesize, void ** data) {
+	void * tmp;
 	int32_t err = PHAZE_SUCCESS;
 
-	err = phzutils_alloc_cells(size+count, &tmp);
+	err = phzutils_allocate(newcount, typesize, &tmp);
 
 	if(err == PHAZE_SUCCESS) {
-		// FIXME: Error check?
-		memcpy(tmp, *cells, size*sizeof(cell_t));
+		memcpy(tmp, *data, count*typesize);
+		free(*data);
+		*data = tmp;
 	} // if
 
 	return err;

@@ -202,9 +202,17 @@ public class PhazeBasicWriter implements PhazeWriter {
 		types_.println(" * phaze_t structure prototype");
 		types_.println(bp_.endComment());
 		types_.println("typedef struct {");
+
+		// cell information
 		types_.println("\tsize_t cell_data_els;");
 		types_.println("\tsize_t cell_data_allocated;");
 		types_.println("\tcell_t * cell_data;");
+
+		// material information
+		types_.println("\tsize_t material_data_els;");
+		types_.println("\tsize_t material_data_allocated;");
+		types_.println("\tmaterial_t * material_data;");
+
 		types_.println("} phaze_t;\n");
 
 		/*----------------------------------------------------------------------*
