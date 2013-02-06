@@ -112,4 +112,12 @@ int32_t phz_add_material(phz_cell cell, phz_material * material) {
 		// update data allocated
 		phz.material_data_allocated += phaze_allocation_block_size;
 	} // if
+
+	// set return pointer
+	*material = &phz.material_data[phz.material_data_els];
+
+	(*material)->_phz_composition = NULL;
+	cell->_phz_material_data = *material;
+
+	return PHAZE_SUCCESS;
 } // phz_add_material
